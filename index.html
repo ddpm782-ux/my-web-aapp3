@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1B3A6B">
+<title>ระบบรายงานปริมาณน้ำฝน จ.พิษณุโลก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --navy:#1B3A6B;--navy-dk:#0F2448;--navy-lt:#2B5BAA;
+  --accent:#E8AF2A;--accent-lt:#FEF9C3;
+  --white:#fff;--bg:#F3F6FB;--bg2:#E8EDF6;
+  --border:rgba(27,58,107,.12);--border2:rgba(27,58,107,.06);
+  --text:#1a1f36;--text2:#5a6680;--text3:#96a0b8;
+  --shadow:0 2px 16px rgba(27,58,107,.09);--shadow-sm:0 1px 6px rgba(27,58,107,.07);
+  --r:10px;--r-sm:6px;
+  --r1bg:#D1FAE5;--r1tc:#065F46;--r2bg:#A7F3D0;--r2tc:#065F46;
+  --r3bg:#FEF9C3;--r3tc:#6B4502;--r4bg:#FDE68A;--r4tc:#92400E;
+  --r5bg:#FDBA74;--r5tc:#9A3412;--r6bg:#FCA5A5;--r6tc:#991B1B;
+  --r7bg:#F87171;--r7tc:#7F1D1D;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text);background:var(--bg);min-height:100vh;padding-bottom:68px}
+@media(min-width:768px){body{padding-bottom:0}}
+
+/* ---- TOP NAV ---- */
+.topnav{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.topnav-inner{max-width:1280px;margin:0 auto;padding:0 16px;display:flex;align-items:center;height:54px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-badge{width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-badge svg{width:20px;height:20px;fill:white;opacity:.9}
+.logo-text .t1{font-size:13px;font-weight:700;color:white;line-height:1.2}
+.logo-text .t2{font-size:10px;color:rgba(255,255,255,.6)}
+.topnav-tabs{display:none;margin-left:auto;gap:2px}
+@media(min-width:768px){.topnav-tabs{display:flex}}
+.tnav-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer;border:none;background:none;font-family:'Sarabun',sans-serif;transition:all .15s}
+.tnav-btn:hover{color:white;background:rgba(255,255,255,.1)}
+.tnav-btn.active{color:white;background:rgba(255,255,255,.18)}
+.tnav-btn .ic{font-size:15px}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+@media(min-width:768px){.topnav-right{margin-left:0}}
+.date-pill{font-size:11px;background:rgba(255,255,255,.12);padding:3px 10px;border-radius:14px;color:rgba(255,255,255,.85);white-space:nowrap;display:none}
+@media(min-width:640px){.date-pill{display:block}}
+
+/* ---- MOBILE BOTTOM NAV ---- */
+.mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:200;box-shadow:0 -2px 10px rgba(0,0,0,.06)}
+@media(min-width:768px){.mob-nav{display:none}}
+.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px 10px;cursor:pointer;color:var(--text3);font-size:10px;font-weight:600;transition:color .15s;border:none;background:none;font-family:'Sarabun',sans-serif}
+.mob-tab.active{color:var(--navy)}
+.mob-tab .mi{font-size:22px;margin-bottom:2px;line-height:1}
+
+/* ---- PAGES ---- */
+.page{display:none}
+.page.active{display:block;animation:fadein .2s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.pg-inner{max-width:1280px;margin:0 auto;padding:14px 12px}
+@media(min-width:640px){.pg-inner{padding:18px 20px}}
+
+/* ---- CARD ---- */
+.card{background:white;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.card-body{padding:14px 16px}
+.card-title{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:.03em;margin-bottom:10px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
+.card-title .sub{font-weight:400;color:var(--text3);font-size:11px;text-transform:none;letter-spacing:0}
+
+/* ---- KPI GRID ---- */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+@media(min-width:560px){.kpi-grid{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:white;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:12px 14px;border-left:3px solid var(--bg2)}
+.kpi.danger{border-color:#DC2626}.kpi.blue{border-color:#1D4ED8}.kpi.warn{border-color:#D97706}.kpi.ok{border-color:#16A34A}
+.kpi-n{font-size:26px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:3px}
+.kpi.danger .kpi-n{color:#DC2626}.kpi.blue .kpi-n{color:#1D4ED8}.kpi.warn .kpi-n{color:#D97706}.kpi.ok .kpi-n{color:#16A34A}
+.kpi-l{font-size:10.5px;color:var(--text3);font-weight:600;line-height:1.3}
+
+/* ---- FORM PAGE ---- */
+.form-topbar{background:white;border-radius:var(--r);box-shadow:var(--shadow);padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.form-topbar-title{flex:1;min-width:180px}
+.form-topbar-title .t1{font-size:15px;font-weight:700;color:var(--navy)}
+.form-topbar-title .t2{font-size:11px;color:var(--text3);margin-top:2px}
+.datetime-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dt-lbl{font-size:11px;font-weight:700;color:var(--text2)}
+input[type=date],input[type=time]{border:1.5px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;font-family:'Sarabun',sans-serif;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s}
+input[type=date]:focus,input[type=time]:focus{border-color:var(--navy-lt)}
+
+.range-info{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--r-sm);padding:7px 14px;margin-bottom:10px;font-size:11.5px;color:#1D4ED8;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ri-seg{display:flex;align-items:center;gap:5px}
+.ri-seg strong{color:var(--navy)}
+.ri-nodata{background:#FEF9C3;border-color:#FDE68A;color:#92400E;font-size:11px}
+
+.legend-row{background:white;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:8px 14px;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.leg-lbl{font-size:11px;font-weight:700;color:var(--text2);margin-right:4px}
+.leg-i{display:flex;align-items:center;gap:3px;font-size:10.5px;color:var(--text2)}
+.leg-d{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+/* District accordion */
+.dist-block{background:white;border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:8px;overflow:hidden}
+.dist-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;user-select:none;transition:background .12s}
+.dist-hd:hover{background:var(--bg)}
+.dist-hd-l{display:flex;align-items:center;gap:10px}
+.dist-num{width:26px;height:26px;background:var(--navy);color:white;border-radius:6px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dist-name{font-weight:700;font-size:13.5px}
+.dist-sub{font-size:10px;color:var(--text3)}
+.dist-hd-r{display:flex;align-items:center;gap:6px}
+.dist-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;background:var(--bg2);color:var(--text2)}
+.dist-badge.alert{background:var(--r3bg);color:var(--r3tc)}.dist-badge.danger{background:var(--r6bg);color:var(--r6tc)}
+.chev{color:var(--text3);font-size:13px;transition:transform .2s;flex-shrink:0}
+.chev.open{transform:rotate(180deg)}
+.dist-body{display:none;border-top:1px solid var(--bg2)}
+.dist-body.open{display:block}
+
+.st-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.st-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.st-tbl th{background:var(--bg);color:var(--text2);font-weight:700;padding:6px 8px;text-align:right;border-bottom:1px solid var(--bg2);white-space:nowrap;font-size:10.5px}
+.st-tbl th:first-child{text-align:left;min-width:130px;position:sticky;left:0;z-index:1}
+.st-tbl th.tot{background:#EFF6FF;color:#1D4ED8}
+.st-tbl td{padding:5px 8px;border-bottom:1px solid var(--bg2);text-align:right;vertical-align:middle;font-size:11.5px}
+.st-tbl td:first-child{text-align:left;background:white;position:sticky;left:0;z-index:1}
+.st-tbl tr:last-child td{border-bottom:none}
+.st-tbl tr:hover td{background:#FAFBFC}.st-tbl tr:hover td:first-child{background:#FAFBFC}
+.st-tbl td.tot{background:#F0F9FF;color:#0C447C;font-weight:700}
+.st-nm{font-weight:600;font-size:12px;color:var(--text);line-height:1.3}
+.st-loc{font-size:9.5px;color:var(--text3)}
+.prev-v{color:var(--text2)}
+.no-d{font-size:10px;color:var(--text3);font-style:italic}
+
+.rain-wrap{display:flex;align-items:center;justify-content:flex-end;gap:4px}
+.r-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s}
+.r-inp{width:64px;text-align:right;padding:4px 6px;border:1.5px solid #D8DFEE;border-radius:5px;font-size:13px;font-weight:700;font-family:'Sarabun',sans-serif;color:var(--text);background:var(--bg);transition:background .12s,color .12s,border-color .15s;-webkit-appearance:none;appearance:none}
+.r-inp:focus{outline:none;border-color:var(--navy-lt);box-shadow:0 0 0 3px rgba(43,91,170,.1)}
+
+.dist-footer{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bg2);background:var(--bg)}
+.df-c{padding:7px 10px;border-right:1px solid var(--bg2);font-size:10.5px;color:var(--text2)}
+.df-c:last-child{border-right:none;background:#EFF6FF}
+.df-c strong{display:block;font-size:13px;font-weight:800;color:var(--text)}
+.df-c.blue strong{color:#0C447C}
+
+.form-actions{background:white;border-radius:var(--r);box-shadow:var(--shadow);padding:12px 16px;margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{padding:9px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;gap:6px}
+.btn-primary{background:var(--navy);color:white}.btn-primary:hover{background:var(--navy-dk)}
+.btn-outline{background:white;color:var(--navy);border:1.5px solid var(--navy)}.btn-outline:hover{background:var(--bg)}
+.btn-ghost{background:var(--bg);color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{background:var(--bg2)}
+.btn-danger{background:#DC2626;color:white}.btn-danger:hover{background:#B91C1C}
+.save-ok{font-size:12px;color:#16A34A;font-weight:700;animation:fadein .3s}
+
+/* ---- DASHBOARD ---- */
+.dash-wrap{display:flex;min-height:calc(100vh - 120px)}
+.dash-sb{width:190px;flex-shrink:0;background:white;border-right:1px solid var(--border);display:none;flex-direction:column;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto}
+@media(min-width:900px){.dash-sb{display:flex}}
+.dash-main{flex:1;min-width:0;padding:14px 12px}
+@media(min-width:640px){.dash-main{padding:18px 20px}}
+
+.dash-mob-tabs{display:flex;background:white;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(min-width:900px){.dash-mob-tabs{display:none}}
+.dmt{flex-shrink:0;padding:10px 13px;font-size:11.5px;font-weight:700;color:var(--text3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;border:none;background:none;font-family:'Sarabun',sans-serif;transition:color .15s}
+.dmt.active{color:var(--navy);border-bottom:2px solid var(--navy)}
+
+.sb-sec{font-size:10px;font-weight:800;color:var(--text3);letter-spacing:.08em;padding:12px 14px 4px;text-transform:uppercase}
+.nav-link{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:1px 6px;border-radius:7px;font-size:12.5px;color:var(--text2);cursor:pointer;transition:all .12s;border:none;background:none;font-family:'Sarabun',sans-serif;width:calc(100% - 12px);text-align:left;font-weight:600}
+.nav-link:hover{background:var(--bg);color:var(--text)}
+.nav-link.active{background:#EFF6FF;color:var(--navy);font-weight:800}
+.nav-link .ni{font-size:16px;width:18px;text-align:center}
+.nav-link .n-tag{margin-left:auto;background:var(--r6bg);color:var(--r6tc);font-size:10px;padding:1px 5px;border-radius:8px;font-weight:800}
+.sb-foot{padding:10px 14px;margin-top:auto;border-top:1px solid var(--border);font-size:10.5px;color:var(--text3)}
+.sb-foot strong{display:block;color:var(--text);font-size:12px;font-weight:700}
+
+.dash-view{display:none}
+.dash-view.active{display:block;animation:fadein .2s ease}
+.vt{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:3px}
+.vs{font-size:11.5px;color:var(--text3);margin-bottom:14px}
+
+.charts-2{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px}
+@media(min-width:700px){.charts-2{grid-template-columns:1fr 1fr}}
+.ch-wrap{position:relative;height:220px}
+.ch-wrap-t{position:relative;height:270px}
+
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700}
+.bd-r{background:var(--r6bg);color:var(--r6tc)}
+.bd-o{background:var(--r4bg);color:var(--r4tc)}
+.bd-y{background:var(--r3bg);color:var(--r3tc)}
+.bd-g{background:var(--r1bg);color:var(--r1tc)}
+.bd-n{background:var(--bg2);color:var(--text2)}
+
+.al-item{background:white;border-radius:var(--r-sm);box-shadow:var(--shadow-sm);padding:10px 14px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.al-item.hi{border-left:4px solid #DC2626}.al-item.md{border-left:4px solid #F59E0B}.al-item.lo{border-left:4px solid #3B82F6}
+.al-v{font-size:22px;font-weight:900;min-width:52px;text-align:center}
+.al-nm{font-weight:700;font-size:12.5px}
+.al-lc{font-size:10.5px;color:var(--text3)}
+
+.ctrl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.c-lbl{font-size:12px;color:var(--text2);font-weight:700}
+.chip{font-size:11px;padding:4px 10px;border-radius:14px;border:1.5px solid var(--border);background:white;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:700;transition:all .12s}
+.chip.on{background:var(--navy);color:white;border-color:var(--navy)}
+.sel-ctrl{font-size:12px;padding:5px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:white;color:var(--text);font-family:'Sarabun',sans-serif;max-width:220px}
+
+.d-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.d-tbl th{background:var(--bg);color:var(--text2);font-weight:700;padding:6px 9px;text-align:left;border-bottom:1px solid var(--bg2);font-size:10.5px;white-space:nowrap}
+.d-tbl th.r{text-align:right}.d-tbl td{padding:5px 9px;border-bottom:1px solid var(--bg2);color:var(--text)}
+.d-tbl td.r{text-align:right;font-variant-numeric:tabular-nums}
+.d-tbl tr:last-child td{border-bottom:none}.d-tbl tr:hover td{background:#FAFBFC}
+.tbl-w{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.mini-b{height:5px;background:var(--bg2);border-radius:3px;margin-top:3px;overflow:hidden}
+.mini-bf{height:100%;border-radius:3px;transition:width .4s}
+
+/* ---- EXPORT PAGE ---- */
+.exp-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:560px){.exp-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.exp-grid{grid-template-columns:repeat(3,1fr)}}
+.exp-card{background:white;border-radius:var(--r);box-shadow:var(--shadow);padding:22px 18px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.exp-card:hover{border-color:var(--navy);transform:translateY(-2px);box-shadow:0 6px 24px rgba(27,58,107,.15)}
+.exp-icon{font-size:38px;margin-bottom:12px}
+.exp-title{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.exp-desc{font-size:12px;color:var(--text3);line-height:1.7}
+
+/* ---- MODAL ---- */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:var(--r);box-shadow:0 8px 40px rgba(0,0,0,.2);width:100%;max-width:520px;overflow:hidden;animation:fadein .2s}
+.modal-hd{background:var(--navy);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.modal-hd h3{font-size:14px;font-weight:700;color:white}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+.modal-body{padding:18px}
+.modal-foot{padding:12px 18px;border-top:1px solid var(--bg2);display:flex;gap:8px;justify-content:flex-end}
+.field-row{margin-bottom:12px}
+.field-lbl{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:5px;display:block}
+.field-inp{width:100%;padding:8px 10px;border:1.5px solid #D8DFEE;border-radius:var(--r-sm);font-size:13px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.field-inp:focus{border-color:var(--navy-lt)}
+.field-hint{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.5}
+.field-hint a{color:var(--navy-lt);text-decoration:underline}
+.steps{counter-reset:step;list-style:none;padding:0}
+.steps li{counter-increment:step;display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--bg2);font-size:12.5px;color:var(--text2)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:counter(step);background:var(--navy);color:white;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px}
+.steps li strong{color:var(--text);display:block;margin-bottom:2px}
+/* Drive status */
+.drive-status{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-sm);font-size:12px;margin-bottom:10px}
+.drive-status.connected{background:#D1FAE5;color:#065F46}
+.drive-status.disconnected{background:#FEF9C3;color:#6B4502}
+.drive-status .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.drive-status.connected .dot{background:#16A34A}
+.drive-status.disconnected .dot{background:#D97706}
+/* Progress toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:900;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.2);white-space:nowrap}
+.toast.show{display:flex;animation:fadein .2s}
+@media(min-width:768px){.toast{bottom:20px}}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Reset danger */
+.danger-zone{background:#FFF5F5;border:1.5px solid #FECACA;border-radius:var(--r);padding:14px 16px;margin-top:14px}
+.danger-zone h4{font-size:12px;font-weight:800;color:#991B1B;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo">
+      <div class="logo-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 16V8l8 4-8 4z" opacity=".4"/><circle cx="12" cy="6" r="2" opacity=".7"/><path d="M8 17c0 2.2 1.8 4 4 4s4-1.8 4-4H8z" opacity=".6"/></svg>
+      </div>
+      <div class="logo-text">
+        <div class="t1">ระบบรายงานน้ำฝน จ.พิษณุโลก</div>
+        <div class="t2">สำนักงานป้องกันและบรรเทาสาธารณภัย</div>
+      </div>
+    </div>
+    <div class="topnav-tabs">
+      <button class="tnav-btn active" onclick="showPage('form',this)"><span class="ic">📝</span> กรอกข้อมูล</button>
+      <button class="tnav-btn" onclick="showPage('dash',this)"><span class="ic">📊</span> Dashboard</button>
+      <button class="tnav-btn" onclick="showPage('export',this)"><span class="ic">📤</span> ส่งออก</button>
+    </div>
+    <div class="topnav-right">
+      <span class="date-pill" id="topDatePill">–</span>
+      <button class="tnav-btn" onclick="openSettings()" title="ตั้งค่า Google Drive"><span class="ic">⚙️</span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE: FORM -->
+<div class="page active" id="page-form">
+<div class="pg-inner">
+
+  <div class="form-topbar">
+    <div class="form-topbar-title">
+      <div class="t1">รายงานปริมาณน้ำฝน 24 ชั่วโมง</div>
+      <div class="t2">ที่มาข้อมูล: สำนักงานทรัพยากรน้ำแห่งชาติ (สทนช.)</div>
+    </div>
+    <div class="datetime-row">
+      <span class="dt-lbl">วันที่</span>
+      <input type="date" id="fDate" onchange="onDateChange()">
+      <span class="dt-lbl">เวลา</span>
+      <input type="time" id="fTime" value="09:30">
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi warn"><div class="kpi-n" id="fk1">0</div><div class="kpi-l">มีฝนตกวันนี้ (สถานี)</div></div>
+    <div class="kpi danger"><div class="kpi-n" id="fk2">–</div><div class="kpi-l">สูงสุดวันนี้ (มม.)</div></div>
+    <div class="kpi blue"><div class="kpi-n" id="fk3">–</div><div class="kpi-l">สูงสุดสะสมรวม (มม.)</div></div>
+    <div class="kpi danger"><div class="kpi-n" id="fk4">0</div><div class="kpi-l">เฝ้าระวัง &gt;35มม. (สถานี)</div></div>
+  </div>
+
+  <div class="range-info" id="rangeInfo">
+    <div class="ri-seg">📅 ช่วงสะสมก่อนหน้า: <strong id="rangeText">กำลังโหลด...</strong></div>
+    <div class="ri-seg">📌 วันปัจจุบัน: <strong id="todayText">–</strong></div>
+  </div>
+
+  <div class="legend-row">
+    <span class="leg-lbl">เกณฑ์:</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r1bg);border:0.5px solid var(--r2bg)"></span>0–10</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r2bg)"></span>10–20</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r3bg)"></span>20–35</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r4bg)"></span>35–50</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r5bg)"></span>50–70</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r6bg)"></span>70–90</span>
+    <span class="leg-i"><span class="leg-d" style="background:var(--r7bg)"></span>&gt;90</span>
+    <span style="margin-left:6px;font-size:10px;color:var(--text3)">|</span>
+    <span class="leg-i"><span class="leg-d" style="background:#DBEAFE;border:0.5px solid #93C5FD"></span>สะสมรวม</span>
+  </div>
+
+  <div id="districtList"></div>
+
+  <div class="form-actions">
+    <button class="btn btn-primary" onclick="saveData()">💾 บันทึกข้อมูล</button>
+    <button class="btn btn-outline" onclick="showPage('export',null)">📤 ส่งออก / Drive</button>
+    <button class="btn btn-ghost" onclick="clearToday()">🗑 ล้างวันนี้</button>
+    <button class="btn btn-ghost" onclick="openSettings()" style="margin-left:auto">⚙️ Google Drive</button>
+    <span class="save-ok" id="saveMsg" style="display:none"></span>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: DASHBOARD -->
+<div class="page" id="page-dash">
+  <div class="dash-mob-tabs" id="dashMobTabs"></div>
+  <div class="dash-wrap">
+    <aside class="dash-sb" id="dashSb">
+      <div class="sb-sec">วิเคราะห์ข้อมูล</div>
+      <button class="nav-link active" onclick="showDash('overview',this)"><span class="ni">📊</span> ภาพรวม</button>
+      <button class="nav-link" onclick="showDash('district',this)"><span class="ni">🏘</span> รายอำเภอ</button>
+      <button class="nav-link" onclick="showDash('station',this)"><span class="ni">📍</span> รายสถานี</button>
+      <button class="nav-link" onclick="showDash('trend',this)"><span class="ni">📈</span> แนวโน้ม</button>
+      <button class="nav-link" onclick="showDash('alert',this)"><span class="ni">⚠️</span> เฝ้าระวัง <span class="n-tag" id="sbAlertTag">0</span></button>
+      <button class="nav-link" onclick="showDash('rawdata',this)"><span class="ni">📋</span> ข้อมูลดิบ</button>
+      <div class="sb-foot">
+        <strong id="sbLatest">–</strong>วันล่าสุด
+        <strong id="sbRange" style="margin-top:6px">–</strong>ช่วงสะสม
+      </div>
+    </aside>
+    <div class="dash-main">
+      <!-- VIEW: OVERVIEW -->
+      <div class="dash-view active" id="dv-overview">
+        <div class="vt">ภาพรวมจังหวัดพิษณุโลก</div>
+        <div class="vs" id="ov-sub">–</div>
+        <div class="kpi-grid">
+          <div class="kpi warn"><div class="kpi-n" id="ov-k1">–</div><div class="kpi-l">มีฝนวันล่าสุด (สถานี)</div></div>
+          <div class="kpi danger"><div class="kpi-n" id="ov-k2">–</div><div class="kpi-l">สูงสุดวันล่าสุด (มม.)</div></div>
+          <div class="kpi blue"><div class="kpi-n" id="ov-k3">–</div><div class="kpi-l">สูงสุดสะสมรวม (มม.)</div></div>
+          <div class="kpi"><div class="kpi-n" id="ov-k4">–</div><div class="kpi-l">เฝ้าระวัง &gt;35มม.</div></div>
+        </div>
+        <div class="charts-2">
+          <div class="card card-body">
+            <div class="card-title">เปรียบเทียบรายอำเภอ — วันล่าสุด <span class="sub">สูงสุด มม.</span></div>
+            <div class="ch-wrap"><canvas id="ov-bar" role="img" aria-label="กราฟแท่งรายอำเภอ"></canvas></div>
+          </div>
+          <div class="card card-body">
+            <div class="card-title">10 สถานีสูงสุด — สะสมรวม <span class="sub">มม.</span></div>
+            <div id="ov-top10" style="overflow-y:auto;max-height:220px"></div>
+          </div>
+        </div>
+        <div class="card card-body">
+          <div class="card-title">สรุปรายอำเภอ <span class="sub">วันล่าสุด</span></div>
+          <div class="tbl-w"><table class="d-tbl" id="ov-dtbl"></table></div>
+        </div>
+      </div>
+
+      <!-- VIEW: DISTRICT -->
+      <div class="dash-view" id="dv-district">
+        <div class="vt">วิเคราะห์รายอำเภอ</div>
+        <div class="ctrl-row">
+          <span class="c-lbl">เลือกอำเภอ:</span>
+          <select class="sel-ctrl" id="dist-sel" onchange="renderDistrict()"></select>
+        </div>
+        <div class="card card-body" style="margin-bottom:12px">
+          <div class="card-title" id="dist-chart-title">ปริมาณน้ำฝนวันล่าสุด <span class="sub">มม.</span></div>
+          <div class="ch-wrap-t"><canvas id="dist-bar" role="img" aria-label="กราฟแท่งรายสถานี"></canvas></div>
+        </div>
+        <div class="card card-body">
+          <div class="card-title">รายละเอียดสถานีทั้งหมด</div>
+          <div class="tbl-w"><table class="d-tbl" id="dist-tbl"></table></div>
+        </div>
+      </div>
+
+      <!-- VIEW: STATION -->
+      <div class="dash-view" id="dv-station">
+        <div class="vt">วิเคราะห์รายสถานี</div>
+        <div class="ctrl-row">
+          <span class="c-lbl">เลือกสถานี:</span>
+          <select class="sel-ctrl" id="st-sel" onchange="renderStation()" style="max-width:300px"></select>
+        </div>
+        <div class="kpi-grid" id="st-kpis" style="grid-template-columns:repeat(3,1fr)"></div>
+        <div class="card card-body" style="margin-bottom:12px">
+          <div class="card-title">แนวโน้มรายวัน <span class="sub" id="st-range-lbl">–</span></div>
+          <div class="ch-wrap"><canvas id="st-line" role="img" aria-label="กราฟแนวโน้มรายสถานี"></canvas></div>
+        </div>
+        <div class="card card-body">
+          <div class="card-title">ประวัติรายวัน</div>
+          <div class="tbl-w"><table class="d-tbl" id="st-tbl"></table></div>
+        </div>
+      </div>
+
+      <!-- VIEW: TREND -->
+      <div class="dash-view" id="dv-trend">
+        <div class="vt">แนวโน้มรายวัน</div>
+        <div class="ctrl-row">
+          <span class="c-lbl">แสดง:</span>
+          <button class="chip on" id="tr-all" onclick="setTrMode('all',this)">ทั้งจังหวัด</button>
+          <button class="chip" id="tr-dist" onclick="setTrMode('dist',this)">รายอำเภอ</button>
+          <select class="sel-ctrl" id="tr-dist-sel" style="display:none" onchange="renderTrend()"></select>
+        </div>
+        <div class="card card-body" style="margin-bottom:12px">
+          <div class="card-title" id="tr-title">ค่าสูงสุดรายวัน ทั้งจังหวัด <span class="sub">มม.</span></div>
+          <div class="ch-wrap-t"><canvas id="tr-line" role="img" aria-label="กราฟแนวโน้มรายวัน"></canvas></div>
+        </div>
+        <div class="card card-body">
+          <div class="card-title">สถิติรายวัน</div>
+          <div class="tbl-w"><table class="d-tbl" id="tr-tbl"></table></div>
+        </div>
+      </div>
+
+      <!-- VIEW: ALERT -->
+      <div class="dash-view" id="dv-alert">
+        <div class="vt">สถานีเฝ้าระวัง</div>
+        <div class="ctrl-row">
+          <span class="c-lbl">เกณฑ์:</span>
+          <button class="chip on" onclick="setAlert(35,this)">หนัก &gt;35มม.</button>
+          <button class="chip" onclick="setAlert(50,this)">หนักมาก &gt;50มม.</button>
+          <button class="chip" onclick="setAlert(70,this)">หนักมากๆ &gt;70มม.</button>
+          <span class="c-lbl" style="margin-left:8px">ดูจาก:</span>
+          <button class="chip on" id="al-lat" onclick="setAlMode('latest',this)">วันล่าสุด</button>
+          <button class="chip" id="al-tot" onclick="setAlMode('total',this)">สะสมรวม</button>
+        </div>
+        <div id="alert-list"></div>
+      </div>
+
+      <!-- VIEW: RAW DATA -->
+      <div class="dash-view" id="dv-rawdata">
+        <div class="vt">ข้อมูลทั้งหมด</div>
+        <div class="ctrl-row">
+          <span class="c-lbl">วันที่:</span>
+          <select class="sel-ctrl" id="raw-sel" onchange="renderRaw()"></select>
+        </div>
+        <div class="card card-body">
+          <div class="card-title" id="raw-title">ข้อมูลรายสถานี</div>
+          <div class="tbl-w"><table class="d-tbl" id="raw-tbl"></table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: EXPORT -->
+<div class="page" id="page-export">
+<div class="pg-inner">
+  <div style="margin-bottom:16px">
+    <div class="vt">ส่งออกรายงาน</div>
+    <div class="vs" id="expSubTitle">เลือกรูปแบบที่ต้องการ</div>
+  </div>
+  <div class="drive-status disconnected" id="driveStatusExp" style="margin-bottom:12px">
+    <div class="dot"></div>
+    <span id="driveStatusExpText">ยังไม่ได้เชื่อมต่อ Google Drive — <a href="#" onclick="openSettings();return false;" style="color:inherit;font-weight:700;text-decoration:underline">ตั้งค่า ↗</a></span>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-card" onclick="exportToDrive('csv')">
+      <div class="exp-icon">☁️</div>
+      <div class="exp-title">บันทึกไปยัง Google Drive</div>
+      <div class="exp-desc">อัปโหลดรายงาน CSV ขึ้น Google Drive อัตโนมัติ สามารถเปิดใน Google Sheets ได้ทันที</div>
+    </div>
+    <div class="exp-card" onclick="exportToDrive('json')">
+      <div class="exp-icon">💾</div>
+      <div class="exp-title">สำรองข้อมูลไป Drive</div>
+      <div class="exp-desc">อัปโหลดไฟล์สำรอง JSON ทั้งหมดขึ้น Drive เพื่อย้ายหรือกู้คืนข้อมูลระหว่างอุปกรณ์</div>
+    </div>
+    <div class="exp-card" onclick="exportPDF()">
+      <div class="exp-icon">📄</div>
+      <div class="exp-title">ส่งออก PDF</div>
+      <div class="exp-desc">พิมพ์รายงานฉบับเต็ม A4 landscape สำหรับส่งผู้บริหาร</div>
+    </div>
+    <div class="exp-card" onclick="exportCSV()">
+      <div class="exp-icon">📊</div>
+      <div class="exp-title">ดาวน์โหลด CSV/Excel</div>
+      <div class="exp-desc">ดาวน์โหลดไฟล์ .csv เปิดใน Excel หรือ Google Sheets ได้ทันที</div>
+    </div>
+    <div class="exp-card" onclick="exportJSON()">
+      <div class="exp-icon">🗄</div>
+      <div class="exp-title">สำรองข้อมูล (JSON)</div>
+      <div class="exp-desc">ดาวน์โหลดข้อมูลทั้งหมด สำหรับสำรองหรือย้ายอุปกรณ์</div>
+    </div>
+    <div class="exp-card" onclick="importJSON()">
+      <div class="exp-icon">📥</div>
+      <div class="exp-title">นำเข้าข้อมูล (JSON)</div>
+      <div class="exp-desc">โหลดไฟล์สำรอง JSON กลับเข้าระบบ</div>
+    </div>
+    <div class="exp-card" onclick="showPage('form',null);window.print()">
+      <div class="exp-icon">🖨</div>
+      <div class="exp-title">พิมพ์รายงาน</div>
+      <div class="exp-desc">สั่งพิมพ์ตารางโดยตรงจากเบราว์เซอร์</div>
+    </div>
+    <div class="exp-card" onclick="copyShare()">
+      <div class="exp-icon">📋</div>
+      <div class="exp-title">คัดลอกสรุป</div>
+      <div class="exp-desc">คัดลอกข้อความสรุปสำหรับส่งผ่าน LINE หรือ Email</div>
+    </div>
+  </div>
+  <div class="danger-zone">
+    <h4>⚠️ Danger Zone</h4>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div style="font-size:12.5px;color:var(--text2)">รีเซ็ตข้อมูลทั้งหมดที่กรอกไว้ในอุปกรณ์นี้ ไม่สามารถกู้คืนได้</div>
+      <button class="btn btn-danger" onclick="document.getElementById('modalReset').classList.add('open')">🗑 รีเซ็ตข้อมูลทั้งหมด</button>
+    </div>
+  </div>
+  <input type="file" id="importInput" accept=".json" style="display:none" onchange="handleImport(this)">
+  <div class="card card-body" style="margin-top:16px">
+    <div class="card-title">ตัวอย่างข้อมูลที่จะส่งออก <span class="sub" id="exp-preview-date">–</span></div>
+    <div class="tbl-w"><table class="d-tbl" id="exp-preview-tbl"></table></div>
+  </div>
+</div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast"><span class="spinner" id="toastSpinner"></span><span id="toastMsg">กำลังประมวลผล...</span></div>
+
+<!-- MODAL: SETTINGS / GOOGLE DRIVE -->
+<div class="modal-overlay" id="modalSettings">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>⚙️ ตั้งค่า Google Drive</h3>
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="drive-status disconnected" id="driveStatus">
+        <div class="dot"></div>
+        <span id="driveStatusText">ยังไม่ได้เชื่อมต่อ Google Drive</span>
+      </div>
+      <div class="field-row">
+        <label class="field-lbl">Google OAuth2 Client ID</label>
+        <input class="field-inp" id="clientIdInput" placeholder="123456789-xxxx.apps.googleusercontent.com" type="text">
+        <div class="field-hint">
+          ต้องสร้าง Client ID จาก Google Cloud Console ก่อน — 
+          <a href="https://console.cloud.google.com/" target="_blank" rel="noopener">เปิด Google Cloud Console ↗</a>
+        </div>
+      </div>
+      <details style="margin-top:8px">
+        <summary style="font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;padding:6px 0">📋 วิธีสร้าง Client ID (คลิกเพื่อดู)</summary>
+        <ol class="steps" style="margin-top:8px">
+          <li><strong>เปิด Google Cloud Console</strong>ไปที่ console.cloud.google.com → สร้าง Project ใหม่หรือเลือก Project เดิม</li>
+          <li><strong>เปิด Google Drive API</strong>ไปที่ APIs &amp; Services → Library → ค้นหา "Google Drive API" → Enable</li>
+          <li><strong>สร้าง OAuth Consent Screen</strong>APIs &amp; Services → OAuth consent screen → เลือก External → กรอกชื่อแอป → Save</li>
+          <li><strong>สร้าง Credentials</strong>APIs &amp; Services → Credentials → Create Credentials → OAuth 2.0 Client ID → Web application</li>
+          <li><strong>ใส่ Authorized origins</strong>เพิ่ม URL ที่ใช้เปิดไฟล์ HTML เช่น <code style="background:var(--bg);padding:1px 5px;border-radius:3px">https://username.github.io</code> หรือ <code style="background:var(--bg);padding:1px 5px;border-radius:3px">http://localhost</code></li>
+          <li><strong>คัดลอก Client ID</strong>จาก Credentials แล้ววางในช่องด้านบน</li>
+        </ol>
+      </details>
+      <div class="field-row" style="margin-top:12px">
+        <label class="field-lbl">โฟลเดอร์ปลายทาง (ไม่บังคับ)</label>
+        <input class="field-inp" id="folderId" placeholder="1jWodZ7B7R_T-j2rjojBUwgF6Rvsn3whs (กำหนดไว้แล้ว)">
+        <div class="field-hint">✅ กำหนดค่าโฟลเดอร์ <strong>"รายงานประจำวัน"</strong> ไว้แล้ว ไฟล์จะถูกส่งไปที่โฟลเดอร์นี้อัตโนมัติ หากต้องการเปลี่ยนให้วาง Folder ID ใหม่</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeSettings()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveSettings()">💾 บันทึกการตั้งค่า</button>
+      <button class="btn btn-outline" id="connectBtn" onclick="connectDrive()" style="display:none">🔗 เชื่อมต่อ Google</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: RESET CONFIRM -->
+<div class="modal-overlay" id="modalReset">
+  <div class="modal">
+    <div class="modal-hd" style="background:#DC2626">
+      <h3>🗑 รีเซ็ตข้อมูลทั้งหมด</h3>
+      <button class="modal-close" onclick="document.getElementById('modalReset').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:var(--text);margin-bottom:12px;line-height:1.7">การรีเซ็ตจะ<strong>ลบข้อมูลน้ำฝนทั้งหมดที่กรอกไว้ในอุปกรณ์นี้</strong> รวมถึงข้อมูลสะสมทุกวัน ไม่สามารถกู้คืนได้</p>
+      <div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:#991B1B">
+        ⚠️ แนะนำให้ <strong>สำรองข้อมูล (JSON)</strong> ก่อนรีเซ็ต เผื่อต้องการกู้คืนภายหลัง
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:var(--text2)">พิมพ์ <strong style="color:#DC2626">รีเซ็ต</strong> เพื่อยืนยัน:</div>
+      <input class="field-inp" id="resetConfirmInput" placeholder="พิมพ์: รีเซ็ต" style="margin-top:6px">
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="document.getElementById('modalReset').classList.remove('open')">ยกเลิก</button>
+      <button class="btn btn-ghost" onclick="exportJSON();showToast('💾 สำรองข้อมูลแล้ว กดรีเซ็ตได้เลย',2500)">💾 สำรองก่อนรีเซ็ต</button>
+      <button class="btn btn-danger" onclick="confirmResetAll()">🗑 รีเซ็ตทั้งหมด</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-nav">
+  <button class="mob-tab active" onclick="showPage('form',this)" id="mob-form">
+    <span class="mi">📝</span>กรอกข้อมูล
+  </button>
+  <button class="mob-tab" onclick="showPage('dash',this)" id="mob-dash">
+    <span class="mi">📊</span>Dashboard
+  </button>
+  <button class="mob-tab" onclick="showPage('export',this)" id="mob-exp">
+    <span class="mi">📤</span>ส่งออก
+  </button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ============================================================
+   DATA DEFINITIONS
+   ============================================================ */
+const DISTRICTS=[
+  {id:'d1',name:'เมืองพิษณุโลก',stations:[
+    {id:'s101',name:'โครงการชลประทานพิษณุโลก',loc:'ต.ในเมือง อ.เมืองพิษณุโลก'},
+    {id:'s102',name:'เมืองพิษณุโลก (หัวรอ)',loc:'ต.หัวรอ อ.เมืองพิษณุโลก'},
+    {id:'s103',name:'คลองผันน้ำยม-น่าน 4',loc:'ต.งิ้วงาม อ.เมืองพิษณุโลก'},
+    {id:'s104',name:'พิษณุโลก (อรัญญิก)',loc:'ต.อรัญญิก อ.เมืองพิษณุโลก'},
+    {id:'s105',name:'เมืองพิษณุโลก (ปากโทก)',loc:'ต.ปากโทก อ.เมืองพิษณุโลก'},
+    {id:'s106',name:'สถานีอุตุนิยมวิทยาพิษณุโลก',loc:'ต.อรัญญิก อ.เมืองพิษณุโลก'},
+    {id:'s107',name:'สนามบินพิษณุโลก',loc:'ต.อรัญญิก อ.เมืองพิษณุโลก'}
+  ]},
+  {id:'d2',name:'วังทอง',stations:[
+    {id:'s201',name:'บ้านคีรีรัตน์',loc:'ต.เขาค้อย อ.เขาค้อ จ.เพชรบูรณ์'},
+    {id:'s202',name:'บ้านทางแดง',loc:'ต.แคมปสน อ.เขาค้อ จ.เพชรบูรณ์'},
+    {id:'s203',name:'บ้านแยง (วังทอง)',loc:'ต.บ้านแยง อ.นครไทย'},
+    {id:'s204',name:'บ้านท่าข้าม',loc:'ต.แก่งโสภา อ.วังทอง'},
+    {id:'s205',name:'ที่ทำการผู้ใหญ่บ้าน หมู่ 13',loc:'ต.วังทอง อ.วังทอง'},
+    {id:'s206',name:'ที่ว่าการอำเภอวังทอง',loc:'ต.วังทอง อ.วังทอง'},
+    {id:'s207',name:'สวนป่าเขากระยาง',loc:'ต.แก่งโสภา อ.วังทอง'},
+    {id:'s208',name:'ศูนย์วิจัยข้าวพิษณุโลก',loc:'ต.วังทอง อ.วังทอง'},
+    {id:'s209',name:'บ้านหินประกาย',loc:'ต.บ้านกลาง อ.วังทอง'},
+    {id:'s210',name:'บ้านไพรงาม',loc:'ต.บ้านกลาง อ.วังทอง'},
+    {id:'s211',name:'แม่น้ำเขก (วังทอง)',loc:'ต.แก่งโสภา อ.วังทอง'},
+    {id:'s212',name:'วังทอง',loc:'ต.วังทอง อ.วังทอง'},
+    {id:'s213',name:'บ้านน้ำยาง',loc:'ต.บ้านกลาง อ.วังทอง'},
+    {id:'s214',name:'ซำทองพัฒนา',loc:'ต.บ้านกลาง อ.วังทอง'}
+  ]},
+  {id:'d3',name:'บางระกำ',stations:[
+    {id:'s301',name:'ทต.บางระกำเมืองใหม่',loc:'ต.บางระกำ อ.บางระกำ'},
+    {id:'s302',name:'ชุมแสงสงคราม',loc:'ต.ชุมแสงสงคราม อ.บางระกำ'},
+    {id:'s303',name:'บางระกำ',loc:'ต.บางระกำ อ.บางระกำ'},
+    {id:'s304',name:'ที่ว่าการอำเภอบางระกำ',loc:'ต.บางระกำ อ.บางระกำ'}
+  ]},
+  {id:'d4',name:'วัดโบสถ์',stations:[
+    {id:'s401',name:'บ้านน้ำโจน',loc:'ต.คันโช้ง อ.วัดโบสถ์'},
+    {id:'s402',name:'เขื่อนแควน้อยบำรุงแดน',loc:'ต.บ้านยาง อ.วัดโบสถ์'},
+    {id:'s403',name:'อบต.วัดโบสถ์',loc:'ต.วัดโบสถ์ อ.วัดโบสถ์'},
+    {id:'s404',name:'ที่ว่าการอำเภอวัดโบสถ์',loc:'ต.วัดโบสถ์ อ.วัดโบสถ์'},
+    {id:'s405',name:'อุทยานแห่งชาติแก่งเจ็ดแคว',loc:'ต.บ้านยาง อ.วัดโบสถ์'}
+  ]},
+  {id:'d5',name:'บางกระทุ่ม',stations:[
+    {id:'s501',name:'อบต.บ้านไร่',loc:'ต.บ้านไร่ อ.บางกระทุ่ม'},
+    {id:'s502',name:'บางกระทุ่ม',loc:'ต.โคกสลุด อ.บางกระทุ่ม'},
+    {id:'s503',name:'นครป่าหมาก',loc:'ต.นครป่าหมาก อ.บางกระทุ่ม'},
+    {id:'s504',name:'สะพานวัดมงคลร่วมใจ (บ้านวังสาร)',loc:'ต.ท่าตาล อ.บางกระทุ่ม'},
+    {id:'s505',name:'ที่ว่าการอำเภอบางกระทุ่ม',loc:'ต.บางกระทุ่ม อ.บางกระทุ่ม'}
+  ]},
+  {id:'d6',name:'พรหมพิราม',stations:[
+    {id:'s601',name:'คลองผันน้ำยม-น่าน 2',loc:'ต.ท่าช้าง อ.พรหมพิราม'},
+    {id:'s602',name:'สะพานข้ามแม่น้ำยมสายเก่า (วังวน)',loc:'ต.วังวน อ.พรหมพิราม'},
+    {id:'s603',name:'สะพานข้ามแม่น้ำยมสายเก่า (ศรีภิรมย์)',loc:'ต.ศรีภิรมย์ อ.พรหมพิราม'},
+    {id:'s604',name:'อบต.พรหมพิราม',loc:'ต.พรหมพิราม อ.พรหมพิราม'},
+    {id:'s605',name:'สำนักงานเกษตรอำเภอพรหมพิราม',loc:'ต.พรหมพิราม อ.พรหมพิราม'}
+  ]},
+  {id:'d7',name:'เนินมะปราง',stations:[
+    {id:'s701',name:'หน่วยพิทักษ์อุทยาน สล.5 (วังแดง)',loc:'ต.ชมพู อ.เนินมะปราง'},
+    {id:'s702',name:'บ้านชมภูเหนือ',loc:'ต.ชมพู อ.เนินมะปราง'},
+    {id:'s703',name:'ที่ว่าการอำเภอเนินมะปราง',loc:'ต.เนินมะปราง อ.เนินมะปราง'},
+    {id:'s704',name:'ทต.เนินมะปราง',loc:'ต.เนินมะปราง อ.เนินมะปราง'},
+    {id:'s705',name:'บ้านทุ่งนาดี',loc:'ต.วังยาง อ.เนินมะปราง'},
+    {id:'s706',name:'บ้านมุงเหนือ',loc:'ต.บ้านมุง อ.เนินมะปราง'}
+  ]},
+  {id:'d8',name:'ชาติตระการ',stations:[
+    {id:'s801',name:'สถานี อบต.ห้วยมุ่น',loc:'ต.ห้วยมุ่น อ.น้ำปาด จ.อุตรดิตถ์'},
+    {id:'s802',name:'บ้านห้วยโป่ง',loc:'ต.ห้วยมุ่น อ.น้ำปาด จ.อุตรดิตถ์'},
+    {id:'s803',name:'บ้านเทอดชาติ',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s804',name:'บ้านบ่อภาคเหนือ',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s805',name:'บ้านลาดเรือ',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s806',name:'บ้านบ่อภาค',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s807',name:'บ้านนาตอน',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s808',name:'อุทยานแห่งชาติภูสอยดาว',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s809',name:'บ้านปากรอง',loc:'ต.ชาติตระการ อ.ชาติตระการ'},
+    {id:'s810',name:'ที่ว่าการอำเภอชาติตระการ',loc:'ต.ป่าแดง อ.ชาติตระการ'},
+    {id:'s811',name:'อบต.ป่าแดง',loc:'ต.ป่าแดง อ.ชาติตระการ'},
+    {id:'s812',name:'บ้านนาล้อม',loc:'ต.ป่าแดง อ.ชาติตระการ'},
+    {id:'s813',name:'เขตรักษาพันธุ์สัตว์ป่าภูเมี่ยงภูทอง',loc:'ต.ชาติตระการ อ.ชาติตระการ'},
+    {id:'s814',name:'บ้านขุนน้ำคับ',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s815',name:'บ้านน้ำจวง',loc:'ต.บ่อภาค อ.ชาติตระการ'},
+    {id:'s816',name:'บ้านเนินพยอม',loc:'ต.บ้านดง อ.ชาติตระการ'},
+    {id:'s817',name:'สะพานคลองท่าสะแก',loc:'ต.ท่าสะแก อ.ชาติตระการ'},
+    {id:'s818',name:'บ้านหนองขาหยั่ง',loc:'ต.สวนเมี่ยง อ.ชาติตระการ'},
+    {id:'s819',name:'ที่ทำการอุทยานน้ำตกชาติตระการ',loc:'ต.ชาติตระการ อ.ชาติตระการ'}
+  ]},
+  {id:'d9',name:'นครไทย',stations:[
+    {id:'s901',name:'บ้านห้วยทอง',loc:'ต.โพนสูง อ.นาแหว้ จ.เลย'},
+    {id:'s902',name:'อบต.กกสะทอน',loc:'ต.กกสะทอน อ.ด่านซ้าย จ.เลย'},
+    {id:'s903',name:'บ้านทุ่งน้ำใส',loc:'ต.โป่ง อ.ด่านซ้าย จ.เลย'},
+    {id:'s904',name:'บ้านห้วยลาด',loc:'ต.อิปุม อ.ด่านซ้าย จ.เลย'},
+    {id:'s905',name:'บ้านบ่อโพธิ',loc:'ต.บ่อโพธิ อ.นครไทย'},
+    {id:'s906',name:'บ้านป่ารวก',loc:'ต.บ่อโพธิ อ.นครไทย'},
+    {id:'s907',name:'หน่วยป้องกันรักษาป่า (น้ำเลา)',loc:'ต.บ่อโพธิ อ.นครไทย'},
+    {id:'s908',name:'บ้านนาปอ',loc:'ต.แสงภา อ.นาแหว้ จ.เลย'},
+    {id:'s909',name:'บ้านโป่งสอ',loc:'ต.น้ำกุ่ม อ.นครไทย'},
+    {id:'s910',name:'บ้านน้ำกุ่ม',loc:'ต.น้ำกุ่ม อ.นครไทย'},
+    {id:'s911',name:'บ้านน้ำตอน',loc:'ต.นาบัว อ.นครไทย'},
+    {id:'s912',name:'บ้านน้ำพาย',loc:'ต.นครไทย อ.นครไทย'},
+    {id:'s913',name:'นครไทย',loc:'ต.นครไทย อ.นครไทย'},
+    {id:'s914',name:'อุทยานแห่งชาติภูหินร่องกล้า',loc:'ต.เนินเพิ่ม อ.นครไทย'},
+    {id:'s915',name:'ที่ว่าการอำเภอนครไทย',loc:'ต.นครไทย อ.นครไทย'},
+    {id:'s916',name:'บ้านแก่งลาด',loc:'ต.ห้วยเฮี้ย อ.นครไทย'},
+    {id:'s917',name:'บ้านนาฟองแดง',loc:'ต.นครชุม อ.นครไทย'},
+    {id:'s918',name:'บ้านน้ำพริก',loc:'ต.ยางโกลน อ.นครไทย'},
+    {id:'s919',name:'บ้านหลังเขา',loc:'ต.หนองกะท้าว อ.นครไทย'},
+    {id:'s920',name:'บ้านแยง (นครไทย)',loc:'ต.บ้านแยง อ.นครไทย'},
+    {id:'s921',name:'บ้านห้วยกอก',loc:'ต.ห้วยเฮี้ย อ.นครไทย'},
+    {id:'s922',name:'บ้านถ้ำพริก',loc:'ต.บ้านแยง อ.นครไทย'},
+    {id:'s923',name:'บ้านพร้าว',loc:'ต.บ้านพร้าว อ.นครไทย'},
+    {id:'s924',name:'บ้านห้วยน้ำไซ',loc:'ต.เนินเพิ่ม อ.นครไทย'},
+    {id:'s925',name:'บ้านบุ่งผำ',loc:'ต.น้ำกุ่ม อ.นครไทย'},
+    {id:'s926',name:'บ้านนาหนอง',loc:'ต.หนองกะท้าว อ.นครไทย'},
+    {id:'s927',name:'ทต.นครไทย',loc:'ต.นครไทย อ.นครไทย'},
+    {id:'s928',name:'บ้านร่องกล้า',loc:'ต.เนินเพิ่ม อ.นครไทย'},
+    {id:'s929',name:'บ้านน้ำคลาด',loc:'ต.บ้านพร้าว อ.นครไทย'}
+  ]}
+];
+
+// Demo seed data (Aug 2025 from original PDF report)
+const DEMO_DATA={
+  '2025-08-07':{s101:0.8,s103:5.2,s104:1.2,s105:0.2,s106:1.2,s107:2,s203:0,s204:2,s205:38.2,s206:35.1,s207:1,s208:24.7,s209:9,s210:2,s211:2.2,s212:0,s213:5,s214:0,s301:0.8,s302:0.6,s303:13.4,s304:2.5,s401:0,s403:15.4,s501:4,s502:0.2,s503:5.2,s604:1.8,s703:15,s704:17,s901:4.5,s910:17.5,s915:0},
+  '2025-08-08':{s101:0.8,s104:2.6,s107:12.6,s205:11.8,s206:20.8,s209:37,s210:9.5,s213:10.5,s303:1.2,s401:4,s403:1.6,s405:10.8,s704:0.4,s808:0,s815:35,s901:0,s910:7.5,s925:0.5},
+  '2025-08-10':{s101:9.4,s104:3.7,s105:3,s107:6.6,s205:1,s211:1.8,s301:0.4,s303:1,s401:6,s604:0.4,s605:15.3,s902:0,s903:1,s910:2},
+  '2025-08-12':{s201:22.5,s402:0.2,s403:1.6,s604:21,s605:15.3,s808:8.8,s812:1,s815:6,s816:1.5,s905:6,s910:10.5,s918:1.5,s925:6,s927:1},
+  '2025-08-14':{s107:1.9,s201:36.5,s206:18.9,s211:15.8,s703:23.4,s704:45.6,s808:2.6,s815:1.5,s916:10,s918:7.5,s921:13,s925:4.5,s926:2.5,s927:7.6},
+  '2025-08-15':{s201:59.5,s205:4.4,s211:5.2,s303:0.8,s405:1,s503:4.8,s505:2.5,s604:5.8,s703:23.4,s704:45.6,s808:47.8,s809:2.5,s810:7,s812:9,s814:6.5,s815:6.5,s816:9,s818:6.5,s819:5.4,s905:2.1,s907:2,s909:27,s910:2,s915:3,s918:15,s919:4.5,s920:2,s921:7.5,s922:4,s923:6,s924:7,s925:3,s926:5.5,s927:1.8,s928:4,s929:10}
+};
+
+/* ============================================================
+   STATE & STATION MAP
+   ============================================================ */
+const stMap={};
+DISTRICTS.forEach(d=>d.stations.forEach(s=>{stMap[s.id]={...s,did:d.id,dname:d.name};}));
+
+const TH_M=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function thaiDate(ds){if(!ds||ds==='–')return'–';const[y,m,d]=ds.split('-').map(Number);return`${d} ${TH_M[m]} ${y+543}`;}
+function fmt(v){return(v&&v>0)?parseFloat(v).toFixed(1):'–';}
+function today(){return new Date().toISOString().substring(0,10);}
+
+// State
+let todayVals={};
+let prevAccum={};
+let savedDates=[];
+let DB={dates:[],byDate:{},prevAccum:{},latestDate:null,latestVals:{},totalAccum:{}};
+let alertThr=35,alertMode='latest',trMode='all';
+const CHARTS={};
+
+/* ============================================================
+   STORAGE LAYER
+   ============================================================ */
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
+
+function getAllSavedKeys(){
+  const keys=[];
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rf-')){keys.push(k);}}
+  return keys.sort();
+}
+
+function loadAllData(){
+  DB={dates:[],byDate:{},prevAccum:{},latestDate:null,latestVals:{},totalAccum:{}};
+  const allData={};
+  // Load only user-saved data (no demo seed)
+  getAllSavedKeys().forEach(k=>{
+    const ds=k.replace('rf-','');
+    const d=lsGet(k);
+    if(d&&d.vals){
+      if(!allData[ds])allData[ds]={};
+      Object.entries(d.vals).forEach(([sid,v])=>{const n=parseFloat(v)||0;if(n>0)allData[ds][sid]=(allData[ds][sid]||0)+n;});
+    }
+  });
+  DB.dates=Object.keys(allData).sort();
+  DB.byDate=allData;
+  DB.latestDate=DB.dates[DB.dates.length-1]||null;
+  DB.latestVals=DB.latestDate?allData[DB.latestDate]:{};
+  const prev={};
+  DB.dates.forEach((ds,i)=>{if(i<DB.dates.length-1)Object.entries(allData[ds]).forEach(([sid,v])=>{prev[sid]=(prev[sid]||0)+(parseFloat(v)||0);});});
+  DB.prevAccum=prev;
+  const tot={};
+  Object.keys(stMap).forEach(sid=>{const t=(prev[sid]||0)+(DB.latestVals[sid]||0);if(t>0)tot[sid]=t;});
+  DB.totalAccum=tot;
+}
+
+function computePrevForDate(selectedDate){
+  prevAccum={};savedDates=[];
+  const keysToLoad=DB.dates.filter(ds=>ds<selectedDate);
+  keysToLoad.forEach(ds=>{
+    savedDates.push(ds);
+    const vals=DB.byDate[ds]||{};
+    Object.entries(vals).forEach(([sid,v])=>{const n=parseFloat(v)||0;if(n>0)prevAccum[sid]=(prevAccum[sid]||0)+n;});
+  });
+}
+
+/* ============================================================
+   FORM MODULE
+   ============================================================ */
+function rainColor(v){
+  if(!v||v<=0)return{bg:'',dot:'#D8DFEE',tc:''};
+  if(v<=10)return{bg:'var(--r1bg)',dot:'#6EE7B7',tc:'var(--r1tc)'};
+  if(v<=20)return{bg:'var(--r2bg)',dot:'#34D399',tc:'var(--r2tc)'};
+  if(v<=35)return{bg:'var(--r3bg)',dot:'#FDE68A',tc:'var(--r3tc)'};
+  if(v<=50)return{bg:'var(--r4bg)',dot:'#FDBA74',tc:'var(--r4tc)'};
+  if(v<=70)return{bg:'var(--r5bg)',dot:'#FB923C',tc:'var(--r5tc)'};
+  if(v<=90)return{bg:'var(--r6bg)',dot:'#FCA5A5',tc:'var(--r6tc)'};
+  return{bg:'var(--r7bg)',dot:'#F87171',tc:'var(--r7tc)'};
+}
+
+function buildForm(){
+  const list=document.getElementById('districtList');
+  list.innerHTML='';
+  DISTRICTS.forEach((d,di)=>{
+    const blk=document.createElement('div');
+    blk.className='dist-block';
+    blk.innerHTML=`
+      <div class="dist-hd" onclick="toggleDist('db-${d.id}','ch-${d.id}')">
+        <div class="dist-hd-l">
+          <div class="dist-num">${di+1}</div>
+          <div><div class="dist-name">อำเภอ${d.name}</div><div class="dist-sub">${d.stations.length} สถานี</div></div>
+        </div>
+        <div class="dist-hd-r">
+          <span class="dist-badge" id="dbadge-${d.id}">ยังไม่กรอก</span>
+          <span class="chev ${di===0?'open':''}" id="ch-${d.id}">▼</span>
+        </div>
+      </div>
+      <div class="dist-body ${di===0?'open':''}" id="db-${d.id}">
+        <div class="st-tbl-wrap">
+        <table class="st-tbl">
+          <thead><tr>
+            <th style="min-width:140px">สถานี / ที่ตั้ง</th>
+            <th id="th-prev-${d.id}" style="min-width:110px">สะสมก่อนหน้า<br><small>มม.</small></th>
+            <th style="min-width:80px">วันนี้<br><small>มม.</small></th>
+            <th class="tot" style="min-width:100px">สะสมรวม<br><small>มม.</small></th>
+          </tr></thead>
+          <tbody id="tb-${d.id}"></tbody>
+        </table>
+        </div>
+        <div class="dist-footer">
+          <div class="df-c"><span>มีฝนวันนี้</span><strong id="dfc-cnt-${d.id}">0</strong></div>
+          <div class="df-c"><span>สูงสุดวันนี้</span><strong id="dfc-day-${d.id}">–</strong></div>
+          <div class="df-c"><span>สูงสุดสะสมก่อนหน้า</span><strong id="dfc-prev-${d.id}">–</strong></div>
+          <div class="df-c blue"><span>สูงสุดสะสมรวม</span><strong id="dfc-tot-${d.id}">–</strong></div>
+        </div>
+      </div>`;
+    list.appendChild(blk);
+
+    const tb=document.getElementById('tb-'+d.id);
+    d.stations.forEach(st=>{
+      todayVals[st.id]=0;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><div class="st-nm">${st.name}</div><div class="st-loc">${st.loc}</div></td>
+        <td id="td-prev-${st.id}" class="prev-v"><span class="no-d">–</span></td>
+        <td>
+          <div class="rain-wrap">
+            <span class="r-dot" id="dot-${st.id}"></span>
+            <input class="r-inp" type="number" min="0" max="999" step="0.1"
+              id="inp-${st.id}" placeholder="0.0" inputmode="decimal"
+              oninput="onRainInput('${st.id}')">
+          </div>
+        </td>
+        <td class="tot" id="td-tot-${st.id}">–</td>`;
+      tb.appendChild(tr);
+    });
+  });
+}
+
+function toggleDist(bodyId,chevId){
+  document.getElementById(bodyId).classList.toggle('open');
+  document.getElementById(chevId).classList.toggle('open');
+}
+
+function onRainInput(sid){
+  const el=document.getElementById('inp-'+sid);
+  const v=parseFloat(el.value)||0;
+  todayVals[sid]=v;
+  applyInputStyle(sid,v);
+  refreshStationRow(sid);
+  refreshDistFooter(stMap[sid].did);
+  refreshFormKPIs();
+}
+
+function applyInputStyle(sid,v){
+  const el=document.getElementById('inp-'+sid);
+  if(!el)return;
+  const c=rainColor(v);
+  el.style.background=v>0?c.bg:'';
+  el.style.color=v>0?c.tc:'';
+  el.style.borderColor=v>0?'transparent':'#D8DFEE';
+  const dot=document.getElementById('dot-'+sid);
+  if(dot)dot.style.background=v>0?c.dot:'#D8DFEE';
+}
+
+function refreshStationRow(sid){
+  const prev=prevAccum[sid]||0;
+  const today=todayVals[sid]||0;
+  const tot=prev+today;
+  const pEl=document.getElementById('td-prev-'+sid);
+  if(pEl)pEl.innerHTML=prev>0?prev.toFixed(1):'<span class="no-d">–</span>';
+  const tEl=document.getElementById('td-tot-'+sid);
+  if(tEl)tEl.textContent=tot>0?tot.toFixed(1):'–';
+}
+
+function refreshDistFooter(did){
+  const d=DISTRICTS.find(x=>x.id===did);
+  let cnt=0,mxDay=0,mxPrev=0,mxTot=0;
+  d.stations.forEach(st=>{
+    const day=todayVals[st.id]||0,prev=prevAccum[st.id]||0,tot=prev+day;
+    if(day>0)cnt++;
+    if(day>mxDay)mxDay=day;if(prev>mxPrev)mxPrev=prev;if(tot>mxTot)mxTot=tot;
+  });
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('dfc-cnt-'+did,cnt);set('dfc-day-'+did,fmt(mxDay));set('dfc-prev-'+did,fmt(mxPrev));set('dfc-tot-'+did,fmt(mxTot));
+  const b=document.getElementById('dbadge-'+did);
+  if(b){
+    if(cnt===0){b.textContent='ยังไม่กรอก';b.className='dist-badge';}
+    else if(mxDay>70){b.textContent='⚠ เฝ้าระวัง! '+mxDay.toFixed(1)+'มม.';b.className='dist-badge danger';}
+    else if(mxDay>35){b.textContent='เฝ้าระวัง '+mxDay.toFixed(1)+'มม.';b.className='dist-badge alert';}
+    else{b.textContent='มีฝน '+cnt+' สถานี';b.className='dist-badge';}
+  }
+}
+
+function refreshFormKPIs(){
+  let rain=0,mxDay=0,mxTot=0,alertCnt=0;
+  Object.keys(stMap).forEach(sid=>{
+    const day=todayVals[sid]||0,prev=prevAccum[sid]||0,tot=prev+day;
+    if(day>0){rain++;if(day>mxDay)mxDay=day;if(day>35)alertCnt++;}
+    if(tot>mxTot)mxTot=tot;
+  });
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('fk1',rain);s('fk2',mxDay>0?mxDay.toFixed(1):'–');s('fk3',mxTot>0?mxTot.toFixed(1):'–');s('fk4',alertCnt);
+}
+
+function refreshAll(){
+  Object.keys(stMap).forEach(sid=>refreshStationRow(sid));
+  DISTRICTS.forEach(d=>refreshDistFooter(d.id));
+  refreshFormKPIs();
+}
+
+function updateRangeInfo(selectedDate){
+  const first=savedDates.length>0?savedDates[0]:null;
+  const last=savedDates.length>0?savedDates[savedDates.length-1]:null;
+  const rEl=document.getElementById('rangeText');
+  const tEl=document.getElementById('todayText');
+  const rInfo=document.getElementById('rangeInfo');
+  if(rEl)rEl.textContent=first&&last?`${thaiDate(first)} – ${thaiDate(last)}`:'ยังไม่มีข้อมูล (กรอกและบันทึกก่อน)';
+  if(tEl)tEl.textContent=thaiDate(selectedDate);
+  if(rInfo)rInfo.className=first?'range-info':'range-info ri-nodata';
+  DISTRICTS.forEach(d=>{
+    const th=document.getElementById('th-prev-'+d.id);
+    if(th)th.innerHTML=(first&&last)?`สะสม ${thaiDate(first)}<br>– ${thaiDate(last)} <small>มม.</small>`:'สะสมก่อนหน้า<br><small class="no-d">ยังไม่มีข้อมูล</small>';
+  });
+  const dateStr=selectedDate?thaiDate(selectedDate):'–';
+  document.getElementById('topDatePill').textContent=dateStr;
+  document.getElementById('todayText').textContent=thaiDate(selectedDate);
+}
+
+function loadTodayInput(selectedDate){
+  // Reset
+  Object.keys(stMap).forEach(sid=>{
+    todayVals[sid]=0;
+    const el=document.getElementById('inp-'+sid);
+    if(el){el.value='';el.style.background='';el.style.color='';el.style.borderColor='#D8DFEE';}
+    const dot=document.getElementById('dot-'+sid);
+    if(dot)dot.style.background='#D8DFEE';
+  });
+  const saved=lsGet('rf-'+selectedDate);
+  if(saved&&saved.vals){
+    if(saved.time)document.getElementById('fTime').value=saved.time;
+    Object.entries(saved.vals).forEach(([sid,v])=>{
+      const n=parseFloat(v)||0;
+      if(n>0){
+        todayVals[sid]=n;
+        const el=document.getElementById('inp-'+sid);
+        if(el){el.value=n;}
+        applyInputStyle(sid,n);
+      }
+    });
+  }
+}
+
+function initForm(){
+  const sel=document.getElementById('fDate').value||today();
+  document.getElementById('fDate').value=sel;
+  loadAllData();
+  computePrevForDate(sel);
+  loadTodayInput(sel);
+  updateRangeInfo(sel);
+  refreshAll();
+}
+
+function onDateChange(){
+  const sel=document.getElementById('fDate').value;
+  loadAllData();
+  computePrevForDate(sel);
+  loadTodayInput(sel);
+  updateRangeInfo(sel);
+  refreshAll();
+}
+
+function saveData(){
+  const ds=document.getElementById('fDate').value;
+  const time=document.getElementById('fTime').value;
+  lsSet('rf-'+ds,{date:ds,time,vals:todayVals,savedAt:new Date().toISOString()});
+  const msg=document.getElementById('saveMsg');
+  msg.style.display='inline';msg.textContent=`✓ บันทึกแล้ว ${thaiDate(ds)} ${time} น.`;
+  setTimeout(()=>msg.style.display='none',3000);
+  loadAllData();updateDashboard();updateExportPreview();
+}
+
+function clearToday(){
+  if(!confirm('ล้างข้อมูลที่กรอกวันนี้?'))return;
+  Object.keys(stMap).forEach(sid=>{
+    todayVals[sid]=0;
+    const el=document.getElementById('inp-'+sid);
+    if(el){el.value='';el.style.background='';el.style.color='';el.style.borderColor='#D8DFEE';}
+    const dot=document.getElementById('dot-'+sid);
+    if(dot)dot.style.background='#D8DFEE';
+  });
+  refreshAll();
+}
+
+/* ============================================================
+   DASHBOARD MODULE
+   ============================================================ */
+const GCOL={grid:'rgba(0,0,0,.06)',tick:'#96a0b8'};
+const DIST_COLORS=['#1B3A6B','#993C1D','#0F6E56','#854AB7','#854F0B','#1D6A8A','#6B4A9A','#1D8A3A','#8A4A1D'];
+
+function mkChart(id,cfg){
+  if(CHARTS[id]){CHARTS[id].destroy();delete CHARTS[id];}
+  const canvas=document.getElementById(id);
+  if(canvas)CHARTS[id]=new Chart(canvas,cfg);
+}
+
+const scaleBase={grid:{color:GCOL.grid},ticks:{color:GCOL.tick,font:{size:10}}};
+
+function badgeCls(v){if(v>70)return'bd-r';if(v>50)return'bd-o';if(v>35)return'bd-y';if(v>0)return'bd-g';return'bd-n';}
+function badgeText(v){if(v>70)return'หนักมากๆ';if(v>50)return'หนักมาก';if(v>35)return'หนัก';if(v>20)return'ปานกลาง';if(v>0)return'เล็กน้อย';return'ไม่มีฝน';}
+
+function dLatestMax(did){let m=0;DISTRICTS.find(d=>d.id===did)?.stations.forEach(s=>{const v=DB.latestVals[s.id]||0;if(v>m)m=v;});return m;}
+function dTotalMax(did){let m=0;DISTRICTS.find(d=>d.id===did)?.stations.forEach(s=>{const v=DB.totalAccum[s.id]||0;if(v>m)m=v;});return m;}
+
+function renderOverview(){
+  if(!DB.latestDate)return;
+  const first=DB.dates[0],last=DB.latestDate;
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('ov-sub',`ล่าสุด: ${thaiDate(last)} · สะสมตั้งแต่ ${thaiDate(first)}`);
+  const latV=Object.values(DB.latestVals),totV=Object.values(DB.totalAccum);
+  const rain=latV.filter(v=>v>0).length;
+  const mxDay=latV.length?Math.max(...latV):0;
+  const mxTot=totV.length?Math.max(...totV):0;
+  const alerts=latV.filter(v=>v>35).length;
+  s('ov-k1',rain);s('ov-k2',mxDay>0?mxDay.toFixed(1):'–');s('ov-k3',mxTot>0?mxTot.toFixed(1):'–');s('ov-k4',alerts);
+  s('sbAlertTag',alerts);s('sbLatest',thaiDate(last));
+  s('sbRange',first?`${thaiDate(first)} – ${thaiDate(last)}`:'–');
+
+  const dNames=DISTRICTS.map(d=>d.name.replace('พิษณุโลก','ฯ'));
+  const dVals=DISTRICTS.map(d=>dLatestMax(d.id));
+  const dColors=dVals.map(v=>v>70?'#DC2626':v>35?'#F59E0B':v>0?'#2563EB':'#CBD5E1');
+  mkChart('ov-bar',{type:'bar',data:{labels:dNames,datasets:[{data:dVals,backgroundColor:dColors,borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(1)+' มม.'}}},scales:{x:{...scaleBase,ticks:{...scaleBase.ticks,maxRotation:35}},y:{...scaleBase,ticks:{...scaleBase.ticks,callback:v=>v+' มม.'}}}}});
+
+  const top10=Object.entries(DB.totalAccum).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const mxT=top10[0]?top10[0][1]:1;
+  const t10El=document.getElementById('ov-top10');
+  if(t10El)t10El.innerHTML=top10.map(([sid,v])=>{
+    const st=stMap[sid];if(!st)return'';
+    const pct=Math.round(v/mxT*100);
+    const col=v>70?'#DC2626':v>35?'#F59E0B':'#2563EB';
+    return`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:1px"><span style="font-weight:700;color:#1a1f36">${st.name}</span><span style="color:#5a6680">${v.toFixed(1)} มม.</span></div><div style="font-size:10px;color:#96a0b8;margin-bottom:2px">${st.dname}</div><div class="mini-b"><div class="mini-bf" style="width:${pct}%;background:${col}"></div></div></div>`;
+  }).join('');
+
+  const dtbl=document.getElementById('ov-dtbl');
+  if(dtbl)dtbl.innerHTML=`<tr><th>อำเภอ</th><th class="r">สถานี</th><th class="r">มีฝนวันนี้</th><th class="r">สูงสุดวันนี้</th><th class="r">สูงสุดสะสมรวม</th><th>ระดับ</th></tr>`+
+  DISTRICTS.map(d=>{
+    const mx=dLatestMax(d.id),mxT=dTotalMax(d.id);
+    const cnt=d.stations.filter(s=>(DB.latestVals[s.id]||0)>0).length;
+    return`<tr><td>${d.name}</td><td class="r">${d.stations.length}</td><td class="r">${cnt}</td><td class="r">${fmt(mx)}</td><td class="r" style="color:#0C447C;font-weight:700">${fmt(mxT)}</td><td><span class="badge ${badgeCls(mx)}">${badgeText(mx)}</span></td></tr>`;
+  }).join('');
+}
+
+function renderDistrict(){
+  const sel=document.getElementById('dist-sel');if(!sel)return;
+  const d=DISTRICTS.find(x=>x.id===sel.value);if(!d)return;
+  const t=document.getElementById('dist-chart-title');
+  if(t)t.innerHTML=`ปริมาณน้ำฝนวันล่าสุด — อำเภอ${d.name} <span class="sub">มม.</span>`;
+  const vals=d.stations.map(s=>DB.latestVals[s.id]||0);
+  const cols=vals.map(v=>v>70?'#DC2626':v>35?'#F59E0B':v>0?'#2563EB':'#CBD5E1');
+  mkChart('dist-bar',{type:'bar',data:{labels:d.stations.map(s=>s.name.length>12?s.name.substring(0,12)+'…':s.name),datasets:[{data:vals,backgroundColor:cols,borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(1)+' มม.'}}},scales:{x:{...scaleBase,ticks:{...scaleBase.ticks,maxRotation:40}},y:{...scaleBase,ticks:{...scaleBase.ticks,callback:v=>v+' มม.'}}}}});
+  const tbl=document.getElementById('dist-tbl');
+  if(tbl)tbl.innerHTML=`<tr><th>สถานี</th><th>ที่ตั้ง</th><th class="r">สะสมก่อนหน้า</th><th class="r">วันล่าสุด</th><th class="r" style="color:#1D4ED8">สะสมรวม</th><th>ระดับ</th></tr>`+
+  d.stations.map(s=>{
+    const prev=DB.prevAccum[s.id]||0,lat=DB.latestVals[s.id]||0,tot=DB.totalAccum[s.id]||0;
+    return`<tr><td>${s.name}</td><td style="color:#96a0b8;font-size:10.5px">${s.loc}</td><td class="r">${fmt(prev)}</td><td class="r" style="font-weight:${lat>0?700:400}">${fmt(lat)}</td><td class="r" style="color:#0C447C;font-weight:700">${fmt(tot)}</td><td><span class="badge ${badgeCls(lat)}">${lat>0?lat.toFixed(1)+'มม.':''}</span></td></tr>`;
+  }).join('');
+}
+
+function renderStation(){
+  const sel=document.getElementById('st-sel');if(!sel)return;
+  const sid=sel.value;const st=stMap[sid];if(!st)return;
+  const prev=DB.prevAccum[sid]||0,lat=DB.latestVals[sid]||0,tot=DB.totalAccum[sid]||0;
+  const kEl=document.getElementById('st-kpis');
+  if(kEl)kEl.innerHTML=`<div class="kpi"><div class="kpi-n">${fmt(prev)}</div><div class="kpi-l">สะสมก่อนหน้า (มม.)</div></div><div class="kpi danger"><div class="kpi-n">${fmt(lat)}</div><div class="kpi-l">วันล่าสุด (มม.)</div></div><div class="kpi blue"><div class="kpi-n">${fmt(tot)}</div><div class="kpi-l">สะสมรวม (มม.)</div></div>`;
+  const datesW=DB.dates.filter(ds=>(DB.byDate[ds]&&(DB.byDate[ds][sid]||0)>0));
+  const rlEl=document.getElementById('st-range-lbl');
+  if(rlEl)rlEl.textContent=datesW.length?`${thaiDate(datesW[0])} – ${thaiDate(datesW[datesW.length-1])}`:'–';
+  const lineVals=DB.dates.map(ds=>DB.byDate[ds]?DB.byDate[ds][sid]||0:0);
+  const lineLabels=DB.dates.map(ds=>{const[,m,d]=ds.split('-').map(Number);return`${d} ${TH_M[m]}`;});
+  mkChart('st-line',{type:'line',data:{labels:lineLabels,datasets:[{label:st.name,data:lineVals,borderColor:'#1B3A6B',backgroundColor:'rgba(27,58,107,.08)',tension:0.35,borderWidth:2,pointRadius:3,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(1)+' มม.'}}},scales:{x:{...scaleBase},y:{...scaleBase,ticks:{...scaleBase.ticks,callback:v=>v+' มม.'}}}}});
+  const stTbl=document.getElementById('st-tbl');
+  if(stTbl){
+    let cum=0;
+    stTbl.innerHTML=`<tr><th>วันที่</th><th class="r">ปริมาณ (มม.)</th><th class="r" style="color:#1D4ED8">สะสม (มม.)</th><th>ระดับ</th></tr>`+
+    DB.dates.map(ds=>{
+      const v=DB.byDate[ds]?DB.byDate[ds][sid]||0:0;
+      cum+=v;
+      return`<tr><td>${thaiDate(ds)}</td><td class="r" style="font-weight:${v>0?700:400}">${v>0?v.toFixed(1):'–'}</td><td class="r" style="color:#0C447C;font-weight:700">${cum>0?cum.toFixed(1):'–'}</td><td>${v>0?`<span class="badge ${badgeCls(v)}">${v.toFixed(1)}มม.</span>`:''}</td></tr>`;
+    }).join('');
+  }
+}
+
+function setTrMode(mode,el){
+  trMode=mode;
+  document.querySelectorAll('#dv-trend .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('tr-dist-sel').style.display=mode==='dist'?'block':'none';
+  renderTrend();
+}
+
+function renderTrend(){
+  const datasets=[];
+  if(trMode==='all'){
+    const t=document.getElementById('tr-title');if(t)t.innerHTML='ค่าสูงสุดรายวัน ทั้งจังหวัด <span class="sub">มม.</span>';
+    const vals=DB.dates.map(ds=>{const vs=Object.values(DB.byDate[ds]||{}).filter(v=>v>0);return vs.length?Math.max(...vs):0;});
+    datasets.push({label:'สูงสุดทั้งจังหวัด',data:vals,borderColor:'#1B3A6B',backgroundColor:'rgba(27,58,107,.08)',tension:0.35,borderWidth:2,pointRadius:3,fill:true});
+  }else{
+    const did=document.getElementById('tr-dist-sel').value;
+    const d=DISTRICTS.find(x=>x.id===did);if(!d)return;
+    const t=document.getElementById('tr-title');if(t)t.innerHTML=`แนวโน้ม อำเภอ${d.name} <span class="sub">มม.</span>`;
+    d.stations.forEach((st,i)=>{
+      const vals=DB.dates.map(ds=>DB.byDate[ds]?DB.byDate[ds][st.id]||0:0);
+      if(vals.some(v=>v>0))datasets.push({label:st.name.length>12?st.name.substring(0,12)+'…':st.name,data:vals,borderColor:DIST_COLORS[i%DIST_COLORS.length],tension:0.35,borderWidth:1.5,pointRadius:2,fill:false});
+    });
+  }
+  const labels=DB.dates.map(ds=>{const[,m,d]=ds.split('-').map(Number);return`${d} ${TH_M[m]}`;});
+  mkChart('tr-line',{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:datasets.length>1,position:'top',labels:{boxWidth:10,font:{size:10},color:GCOL.tick}},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+' มม.'}}},scales:{x:{...scaleBase},y:{...scaleBase,ticks:{...scaleBase.ticks,callback:v=>v+' มม.'}}}}});
+  const tTbl=document.getElementById('tr-tbl');
+  if(tTbl)tTbl.innerHTML=`<tr><th>วันที่</th><th class="r">สถานีมีฝน</th><th class="r">สูงสุด (มม.)</th><th class="r">เฉลี่ย (มม.)</th><th>ระดับ</th></tr>`+
+  DB.dates.map(ds=>{
+    const vals=Object.values(DB.byDate[ds]||{}).filter(v=>v>0);
+    const mx=vals.length?Math.max(...vals):0,avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+    return`<tr><td>${thaiDate(ds)}</td><td class="r">${vals.length}</td><td class="r">${fmt(mx)}</td><td class="r">${vals.length?avg.toFixed(1):'–'}</td><td><span class="badge ${badgeCls(mx)}">${badgeText(mx)}</span></td></tr>`;
+  }).join('');
+}
+
+function setAlert(v,el){
+  alertThr=v;
+  document.querySelectorAll('#dv-alert .ctrl-row .chip').forEach((c,i)=>{if(i<3)c.classList.remove('on');});
+  el.classList.add('on');renderAlerts();
+}
+function setAlMode(mode,el){
+  alertMode=mode;
+  document.getElementById('al-lat').classList.toggle('on',mode==='latest');
+  document.getElementById('al-tot').classList.toggle('on',mode==='total');
+  renderAlerts();
+}
+
+function renderAlerts(){
+  const src=alertMode==='latest'?DB.latestVals:DB.totalAccum;
+  const lbl=alertMode==='latest'?`วันล่าสุด (${thaiDate(DB.latestDate)})`:'สะสมรวมทั้งหมด';
+  const items=Object.entries(src).filter(([,v])=>v>=alertThr).sort((a,b)=>b[1]-a[1]);
+  const list=document.getElementById('alert-list');
+  if(!list)return;
+  if(!items.length){list.innerHTML=`<div style="text-align:center;padding:32px;color:#96a0b8;font-size:13px">ไม่มีสถานีที่เกินเกณฑ์ ${alertThr} มม. ใน${lbl}</div>`;return;}
+  list.innerHTML=items.map(([sid,v])=>{
+    const st=stMap[sid];if(!st)return'';
+    const cls=v>70?'hi':v>35?'md':'lo';
+    const col=v>70?'#DC2626':v>50?'#F59E0B':'#2563EB';
+    return`<div class="al-item ${cls}"><div class="al-v" style="color:${col}">${v.toFixed(1)}</div><div style="flex:1"><div class="al-nm">${st.name}</div><div class="al-lc">${st.loc} · อำเภอ${st.dname}</div></div><span class="badge ${badgeCls(v)}">${badgeText(v)}</span></div>`;
+  }).join('');
+}
+
+function renderRaw(){
+  const sel=document.getElementById('raw-sel');if(!sel)return;
+  const ds=sel.value;
+  const vals=ds==='total'?DB.totalAccum:ds==='latest'?DB.latestVals:(DB.byDate[ds]||{});
+  const t=document.getElementById('raw-title');
+  if(t)t.textContent=ds==='total'?'สะสมรวมทั้งหมด':ds==='latest'?`วันล่าสุด (${thaiDate(DB.latestDate)})`:thaiDate(ds);
+  const tbl=document.getElementById('raw-tbl');
+  if(tbl)tbl.innerHTML=`<tr><th>อำเภอ</th><th>สถานี</th><th>ที่ตั้ง</th><th class="r">ค่า (มม.)</th><th>ระดับ</th></tr>`+
+  DISTRICTS.flatMap(d=>d.stations.map(s=>{
+    const v=vals[s.id]||0;
+    return`<tr><td style="color:#96a0b8">${d.name}</td><td>${s.name}</td><td style="color:#96a0b8;font-size:10.5px">${s.loc}</td><td class="r" style="font-weight:${v>0?700:400}">${v>0?v.toFixed(1):'–'}</td><td>${v>0?`<span class="badge ${badgeCls(v)}">${badgeText(v)}</span>`:''}</td></tr>`;
+  })).join('');
+}
+
+function updateDashboard(){
+  loadAllData();
+  renderOverview();
+  const activeView=document.querySelector('.dash-view.active');
+  if(activeView){
+    const id=activeView.id.replace('dv-','');
+    if(id==='district')renderDistrict();
+    else if(id==='station')renderStation();
+    else if(id==='trend')renderTrend();
+    else if(id==='alert')renderAlerts();
+    else if(id==='rawdata')renderRaw();
+  }
+}
+
+function showDash(name,navEl){
+  document.querySelectorAll('.dash-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.dmt').forEach(n=>n.classList.remove('active'));
+  const view=document.getElementById('dv-'+name);
+  if(view)view.classList.add('active');
+  if(navEl)navEl.classList.add('active');
+  // also activate mobile tab
+  const mobTab=document.querySelector(`.dmt[data-view="${name}"]`);
+  if(mobTab)mobTab.classList.add('active');
+  if(name==='overview')renderOverview();
+  else if(name==='district')renderDistrict();
+  else if(name==='station')renderStation();
+  else if(name==='trend')renderTrend();
+  else if(name==='alert')renderAlerts();
+  else if(name==='rawdata')renderRaw();
+}
+
+/* ============================================================
+   EXPORT MODULE
+   ============================================================ */
+function buildExportText(){
+  const last=DB.latestDate,first=DB.dates[0];
+  const lines=[
+    `รายงานปริมาณน้ำฝน จ.พิษณุโลก`,
+    `วันที่ ${thaiDate(last)} — ช่วงสะสม ${thaiDate(first)} – ${thaiDate(last)}`,
+    ``
+  ];
+  DISTRICTS.forEach((d,di)=>{
+    lines.push(`${di+1}. อำเภอ${d.name}`);
+    d.stations.forEach(st=>{
+      const prev=DB.prevAccum[st.id]||0,lat=DB.latestVals[st.id]||0,tot=DB.totalAccum[st.id]||0;
+      lines.push(`  ${st.name} (${st.loc}) | สะสมก่อนหน้า: ${prev.toFixed(1)} | วันล่าสุด: ${lat.toFixed(1)} | สะสมรวม: ${tot.toFixed(1)} มม.`);
+    });
+    lines.push('');
+  });
+  return lines.join('\n');
+}
+
+function exportPDF(){
+  const w=window.open('','_blank');
+  if(!w)return alert('กรุณาอนุญาต pop-up');
+  const last=DB.latestDate,first=DB.dates[0];
+  let html=`<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Sarabun',sans-serif;font-size:9pt;margin:0;padding:0;color:#222}
+    .hd{background:#1B3A6B;color:white;padding:8px 14px;display:flex;align-items:center;justify-content:space-between}
+    .hd h1{font-size:13pt;font-weight:700;margin:0}
+    .hd p{font-size:8pt;opacity:.8;margin:2px 0 0}
+    .meta{background:#EFF6FF;padding:5px 14px;font-size:8pt;color:#1D4ED8;display:flex;gap:20px}
+    table{width:100%;border-collapse:collapse;margin-bottom:8px}
+    th{background:#1B3A6B;color:white;padding:4px 6px;font-size:7.5pt;text-align:right;white-space:nowrap}
+    th:first-child,th:nth-child(2){text-align:left}
+    td{padding:3px 6px;border-bottom:0.5px solid #e0e0e0;font-size:8pt;text-align:right}
+    td:first-child,td:nth-child(2){text-align:left;font-size:7.5pt}
+    .dist-hd td{background:#E8EDF6;font-weight:700;text-align:left;padding:4px 6px;font-size:8.5pt;color:#1B3A6B}
+    .tot-col{color:#0C447C;font-weight:700}
+    tr:nth-child(even) td{background:#F8F9FA}
+    .r1{background:#D1FAE5}.r2{background:#A7F3D0}.r3{background:#FEF9C3}.r4{background:#FDE68A}.r5{background:#FDBA74}.r6{background:#FCA5A5}.r7{background:#F87171}
+    @page{size:A4 landscape;margin:8mm}
+    @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body>
+  <div class="hd"><div><h1>รายงานปริมาณน้ำฝน 24 ชั่วโมง จังหวัดพิษณุโลก</h1><p>จัดทำโดย สำนักงานป้องกันและบรรเทาสาธารณภัยจังหวัดพิษณุโลก · ที่มาข้อมูล: สทนช.</p></div><div style="text-align:right;font-size:8pt"><div>${thaiDate(last)}</div><div style="opacity:.7">สะสม ${thaiDate(first)} – ${thaiDate(last)}</div></div></div>
+  <div class="meta"><span>วันล่าสุด: ${thaiDate(last)}</span><span>ช่วงสะสม: ${thaiDate(first)} – ${thaiDate(last)}</span><span>จำนวนสถานี: ${Object.keys(stMap).length} สถานี</span></div>
+  <table><tr><th style="min-width:130px">สถานี</th><th style="min-width:100px">ที่ตั้ง</th><th>สะสม ${thaiDate(first)} – ${thaiDate(last)} (มม.)</th><th>วันล่าสุด (มม.)</th><th class="tot-col">สะสมรวม (มม.)</th></tr>`;
+
+  function rClass(v){if(v>90)return'r7';if(v>70)return'r6';if(v>50)return'r5';if(v>35)return'r4';if(v>20)return'r3';if(v>10)return'r2';if(v>0)return'r1';return'';}
+
+  DISTRICTS.forEach((d,di)=>{
+    html+=`<tr class="dist-hd"><td colspan="5">${di+1}. อำเภอ${d.name}</td></tr>`;
+    d.stations.forEach(st=>{
+      const prev=DB.prevAccum[st.id]||0,lat=DB.latestVals[st.id]||0,tot=DB.totalAccum[st.id]||0;
+      html+=`<tr><td>${st.name}</td><td>${st.loc}</td><td>${prev>0?prev.toFixed(1):'–'}</td><td class="${rClass(lat)}">${lat>0?lat.toFixed(1):'–'}</td><td class="tot-col">${tot>0?tot.toFixed(1):'–'}</td></tr>`;
+    });
+  });
+  html+=`</table><p style="font-size:7pt;color:#888;text-align:right">พิมพ์เมื่อ: ${new Date().toLocaleString('th-TH')}</p></body></html>`;
+  w.document.write(html);w.document.close();
+  setTimeout(()=>w.print(),800);
+}
+
+function exportCSV(){
+  const last=DB.latestDate,first=DB.dates[0];
+  const rows=[['อำเภอ','สถานี','ที่ตั้ง',`สะสม ${first} ถึง ${last} (มม.)`,'วันล่าสุด (มม.)','สะสมรวม (มม.)']];
+  DISTRICTS.forEach(d=>{
+    d.stations.forEach(st=>{
+      const prev=DB.prevAccum[st.id]||0,lat=DB.latestVals[st.id]||0,tot=DB.totalAccum[st.id]||0;
+      rows.push([d.name,st.name,st.loc,prev.toFixed(1),lat.toFixed(1),tot.toFixed(1)]);
+    });
+  });
+  const csv='\uFEFF'+rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`น้ำฝน_พิษณุโลก_${last}.csv`;a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportJSON(){
+  const data={exportedAt:new Date().toISOString(),savedDates:getAllSavedKeys().map(k=>({date:k.replace('rf-',''),data:lsGet(k)}))};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`น้ำฝน_สำรอง_${today()}.json`;a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(){document.getElementById('importInput').click();}
+function handleImport(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.savedDates)throw new Error('Invalid format');
+      let cnt=0;
+      data.savedDates.forEach(({date,data:d})=>{
+        if(date&&d){lsSet('rf-'+date,d);cnt++;}
+      });
+      alert(`นำเข้าข้อมูล ${cnt} วันสำเร็จ`);
+      loadAllData();initForm();updateDashboard();updateExportPreview();
+    }catch(err){alert('ไม่สามารถนำเข้าข้อมูลได้: '+err.message);}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+function copyShare(){
+  const txt=buildExportText();
+  navigator.clipboard.writeText(txt).then(()=>alert('คัดลอกแล้ว! วางใน LINE/Email ได้เลย')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('คัดลอกแล้ว!');
+  });
+}
+
+function updateExportPreview(){
+  loadAllData();
+  const last=DB.latestDate;
+  const dpEl=document.getElementById('exp-preview-date');
+  if(dpEl)dpEl.textContent=thaiDate(last)||'ไม่มีข้อมูล';
+  const tbl=document.getElementById('exp-preview-tbl');
+  if(!tbl)return;
+  const top15=Object.entries(DB.totalAccum).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  tbl.innerHTML=`<tr><th>อำเภอ</th><th>สถานี</th><th class="r">สะสมก่อนหน้า</th><th class="r">วันล่าสุด</th><th class="r" style="color:#1D4ED8">สะสมรวม</th></tr>`+
+  top15.map(([sid,tot])=>{
+    const st=stMap[sid];if(!st)return'';
+    const prev=DB.prevAccum[sid]||0,lat=DB.latestVals[sid]||0;
+    return`<tr><td style="color:#96a0b8">${st.dname}</td><td>${st.name}</td><td class="r">${fmt(prev)}</td><td class="r">${fmt(lat)}</td><td class="r" style="color:#0C447C;font-weight:700">${tot.toFixed(1)}</td></tr>`;
+  }).join('');
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tnav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.mob-tab').forEach(b=>b.classList.remove('active'));
+  const page=document.getElementById('page-'+name);
+  if(page)page.classList.add('active');
+  if(el&&el.classList.contains('tnav-btn'))el.classList.add('active');
+  // sync nav buttons
+  document.querySelectorAll('.tnav-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(name))b.classList.add('active');});
+  const mobBtn=document.getElementById('mob-'+name);
+  if(mobBtn)mobBtn.classList.add('active');
+  if(name==='dash'){updateDashboard();}
+  else if(name==='export'){updateExportPreview();}
+}
+
+/* ============================================================
+   INITIALIZATION
+   ============================================================ */
+function init(){
+  // Set today's date
+  document.getElementById('fDate').value=today();
+  // Build form
+  buildForm();
+  // Setup dashboard selects
+  const distSel=document.getElementById('dist-sel');
+  const trDistSel=document.getElementById('tr-dist-sel');
+  DISTRICTS.forEach(d=>{
+    if(distSel)distSel.appendChild(new Option('อำเภอ'+d.name,d.id));
+    if(trDistSel)trDistSel.appendChild(new Option('อำเภอ'+d.name,d.id));
+  });
+  const stSel=document.getElementById('st-sel');
+  if(stSel)DISTRICTS.forEach(d=>d.stations.forEach(s=>stSel.appendChild(new Option(`[${d.name}] ${s.name}`,s.id))));
+  // Setup raw date select
+  const rawSel=document.getElementById('raw-sel');
+  if(rawSel){
+    rawSel.appendChild(new Option('วันล่าสุด','latest'));
+    rawSel.appendChild(new Option('สะสมรวมทั้งหมด','total'));
+  }
+  // Build dashboard mobile tabs
+  const tabCfg=[{id:'overview',label:'ภาพรวม'},{id:'district',label:'รายอำเภอ'},{id:'station',label:'รายสถานี'},{id:'trend',label:'แนวโน้ม'},{id:'alert',label:'เฝ้าระวัง'},{id:'rawdata',label:'ข้อมูลดิบ'}];
+  const mobTabs=document.getElementById('dashMobTabs');
+  if(mobTabs){
+    tabCfg.forEach((t,i)=>{
+      const btn=document.createElement('button');
+      btn.className='dmt'+(i===0?' active':'');
+      btn.setAttribute('data-view',t.id);
+      btn.textContent=t.label;
+      btn.onclick=()=>{
+        const navLinks=document.querySelectorAll('.nav-link');
+        let matchingLink=null;
+        navLinks.forEach(l=>{if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes(t.id))matchingLink=l;});
+        showDash(t.id,matchingLink);
+      };
+      mobTabs.appendChild(btn);
+    });
+  }
+  // Close modals on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open');});
+  });
+  // Load data
+  initForm();
+  loadAllData();
+  loadDriveSettings();
+  // Raw select dates
+  if(rawSel){
+    DB.dates.slice().reverse().forEach(ds=>rawSel.appendChild(new Option(thaiDate(ds),ds)));
+  }
+}
+
+/* ============================================================
+   GOOGLE DRIVE MODULE
+   ============================================================ */
+const DRIVE_SCOPE='https://www.googleapis.com/auth/drive.file';
+let gToken=null;
+let gTokenExpiry=0;
+let gClientId='';
+let gFolderId='';
+
+// Default folder ID pre-configured → โฟลเดอร์ "รายงานประจำวัน"
+const DEFAULT_FOLDER_ID='1jWodZ7B7R_T-j2rjojBUwgF6Rvsn3whs';
+
+function loadDriveSettings(){
+  gClientId=localStorage.getItem('gd_client_id')||'';
+  gFolderId=localStorage.getItem('gd_folder_id')||DEFAULT_FOLDER_ID;
+  const inp=document.getElementById('clientIdInput');
+  const fld=document.getElementById('folderId');
+  if(inp)inp.value=gClientId;
+  if(fld)fld.value=gFolderId;
+  updateDriveStatusUI();
+}
+
+function saveSettings(){
+  gClientId=(document.getElementById('clientIdInput').value||'').trim();
+  gFolderId=(document.getElementById('folderId').value||DEFAULT_FOLDER_ID).trim();
+  localStorage.setItem('gd_client_id',gClientId);
+  localStorage.setItem('gd_folder_id',gFolderId);
+  gToken=null;gTokenExpiry=0;
+  if(gClientId){
+    const btn=document.getElementById('connectBtn');
+    if(btn)btn.style.display='inline-flex';
+    closeSettings();
+    showToast('💾 บันทึกการตั้งค่าแล้ว กดเชื่อมต่อ Google เพื่อเข้าสู่ระบบ',3000);
+    setTimeout(()=>openSettings(),300);
+  } else {
+    closeSettings();
+    showToast('💾 บันทึกการตั้งค่าแล้ว',2000);
+  }
+  updateDriveStatusUI();
+}
+
+function connectDrive(){
+  if(!gClientId){showToast('⚠️ กรุณาใส่ Client ID ก่อน',2500);return;}
+  if(!window.google||!window.google.accounts){
+    showToast('⏳ กำลังโหลด Google API กรุณารอสักครู่แล้วลองใหม่',3000);return;
+  }
+  window.google.accounts.oauth2.initTokenClient({
+    client_id:gClientId,
+    scope:DRIVE_SCOPE,
+    callback:(resp)=>{
+      if(resp.error){showToast('❌ เชื่อมต่อไม่สำเร็จ: '+resp.error,4000);return;}
+      gToken=resp.access_token;
+      gTokenExpiry=Date.now()+(resp.expires_in-60)*1000;
+      updateDriveStatusUI();
+      showToast('✅ เชื่อมต่อ Google Drive สำเร็จ!',3000);
+      closeSettings();
+    }
+  }).requestAccessToken();
+}
+
+function isTokenValid(){return gToken&&Date.now()<gTokenExpiry;}
+
+function updateDriveStatusUI(){
+  const connected=isTokenValid();
+  const ids=['driveStatus','driveStatusExp'];
+  const txts=['driveStatusText','driveStatusExpText'];
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.className='drive-status '+(connected?'connected':'disconnected');
+    const tx=document.getElementById(txts[i]);
+    if(tx){
+      if(connected)tx.textContent='เชื่อมต่อ Google Drive แล้ว พร้อมอัปโหลด ✓';
+      else if(gClientId)tx.innerHTML='มี Client ID แล้ว — <a href="#" onclick="openSettings();return false;" style="color:inherit;font-weight:700;text-decoration:underline">คลิกเชื่อมต่อ ↗</a>';
+      else tx.innerHTML='ยังไม่ได้ตั้งค่า Google Drive — <a href="#" onclick="openSettings();return false;" style="color:inherit;font-weight:700;text-decoration:underline">ตั้งค่า ↗</a>';
+    }
+  });
+  const btn=document.getElementById('connectBtn');
+  if(btn)btn.style.display=gClientId&&!connected?'inline-flex':'none';
+}
+
+async function uploadToDrive(filename,content,mimeType){
+  if(!isTokenValid()){
+    if(gClientId){
+      showToast('🔐 Session หมดอายุ กำลังขอสิทธิ์ใหม่...',2000);
+      return new Promise((resolve)=>{
+        window.google.accounts.oauth2.initTokenClient({
+          client_id:gClientId,scope:DRIVE_SCOPE,
+          callback:(resp)=>{
+            if(resp.error){showToast('❌ ไม่สามารถขอสิทธิ์ได้',3000);resolve(null);return;}
+            gToken=resp.access_token;gTokenExpiry=Date.now()+(resp.expires_in-60)*1000;
+            updateDriveStatusUI();
+            uploadToDrive(filename,content,mimeType).then(resolve);
+          }
+        }).requestAccessToken();
+      });
+    } else {
+      showToast('⚠️ กรุณาตั้งค่า Google Drive ก่อน',3000);openSettings();return null;
+    }
+  }
+
+  const meta={name:filename,mimeType};
+  if(gFolderId)meta.parents=[gFolderId];
+
+  const form=new FormData();
+  form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));
+  form.append('file',new Blob([content],{type:mimeType}));
+
+  const res=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink',{
+    method:'POST',
+    headers:{Authorization:'Bearer '+gToken},
+    body:form
+  });
+  if(!res.ok){
+    const err=await res.json();
+    throw new Error(err.error?.message||'Upload failed');
+  }
+  return res.json();
+}
+
+async function exportToDrive(type){
+  loadAllData();
+  if(!isTokenValid()&&!gClientId){openSettings();return;}
+  showToast('☁️ กำลังอัปโหลดไป Google Drive...',0);
+
+  try{
+    const last=DB.latestDate||today();
+    const first=DB.dates[0]||last;
+    let result;
+
+    if(type==='csv'){
+      const rows=[['อำเภอ','สถานี','ที่ตั้ง',`สะสม ${first} ถึง ${last} (มม.)`,'วันล่าสุด (มม.)','สะสมรวม (มม.)']];
+      DISTRICTS.forEach(d=>d.stations.forEach(st=>{
+        const prev=DB.prevAccum[st.id]||0,lat=DB.latestVals[st.id]||0,tot=DB.totalAccum[st.id]||0;
+        rows.push([d.name,st.name,st.loc,prev.toFixed(1),lat.toFixed(1),tot.toFixed(1)]);
+      }));
+      const csv='\uFEFF'+rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+      const fname=`รายงานน้ำฝน_พิษณุโลก_${last}.csv`;
+      result=await uploadToDrive(fname,csv,'text/csv');
+    } else {
+      const data={exportedAt:new Date().toISOString(),savedDates:getAllSavedKeys().map(k=>({date:k.replace('rf-',''),data:lsGet(k)}))};
+      const json=JSON.stringify(data,null,2);
+      const fname=`สำรองข้อมูล_น้ำฝน_พิษณุโลก_${today()}.json`;
+      result=await uploadToDrive(fname,json,'application/json');
+    }
+
+    hideToast();
+    if(result){
+      const link=result.webViewLink||`https://drive.google.com/file/d/${result.id}/view`;
+      showToast('✅ อัปโหลดสำเร็จ! คลิกที่นี่เพื่อเปิด',4000,()=>window.open(link,'_blank'));
+    }
+  }catch(e){
+    hideToast();
+    showToast('❌ อัปโหลดไม่สำเร็จ: '+e.message,5000);
+  }
+}
+
+/* ============================================================
+   SETTINGS MODAL
+   ============================================================ */
+function openSettings(){
+  loadDriveSettings();
+  document.getElementById('modalSettings').classList.add('open');
+}
+function closeSettings(){
+  document.getElementById('modalSettings').classList.remove('open');
+}
+
+/* ============================================================
+   RESET ALL DATA
+   ============================================================ */
+function confirmResetAll(){
+  const inp=document.getElementById('resetConfirmInput');
+  if(!inp||inp.value.trim()!=='รีเซ็ต'){
+    inp.style.borderColor='#DC2626';
+    inp.placeholder='พิมพ์คำว่า รีเซ็ต เพื่อยืนยัน!';
+    return;
+  }
+  // Delete all rf- keys
+  const keys=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith('rf-'))keys.push(k);
+  }
+  keys.forEach(k=>localStorage.removeItem(k));
+  // Reset state
+  todayVals={};prevAccum={};savedDates=[];
+  DB={dates:[],byDate:{},prevAccum:{},latestDate:null,latestVals:{},totalAccum:{}};
+  // Close modal
+  document.getElementById('modalReset').classList.remove('open');
+  document.getElementById('resetConfirmInput').value='';
+  // Reload
+  initForm();updateDashboard();updateExportPreview();
+  showToast('✅ รีเซ็ตข้อมูลทั้งหมดสำเร็จ',3000);
+}
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+let toastTimer=null;
+function showToast(msg,duration=3000,onClick=null){
+  const toast=document.getElementById('toast');
+  const msgEl=document.getElementById('toastMsg');
+  const spin=document.getElementById('toastSpinner');
+  if(!toast)return;
+  if(msgEl)msgEl.textContent=msg;
+  if(spin)spin.style.display=duration===0?'block':'none';
+  toast.className='toast show';
+  if(onClick){toast.style.cursor='pointer';toast.onclick=onClick;}
+  else{toast.style.cursor='default';toast.onclick=null;}
+  if(toastTimer)clearTimeout(toastTimer);
+  if(duration>0)toastTimer=setTimeout(hideToast,duration);
+}
+function hideToast(){
+  const t=document.getElementById('toast');
+  if(t)t.classList.remove('show');
+}
+
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
